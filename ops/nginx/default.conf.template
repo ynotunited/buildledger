@@ -1,0 +1,45 @@
+limit_req_zone $binary_remote_addr zone=login_limit:10m rate=10r/m;
+limit_req_zone $binary_remote_addr zone=api_limit:10m rate=120r/m;
+
+upstream frontend_upstream {
+    server frontend:3000;
+}
+
+upstream backend_upstream {
+    server backend:80;
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_set_header X-Request-Id $request_id;
+    proxy_set_header X-Gateway-Token ${API_GATEWAY_SHARED_SECRET};
+
+    location = /up {
+        proxy_pass http://backend_upstream/up;
+    }
+
+    location = /readyz {
+        proxy_pass http://backend_upstream/readyz;
+    }
+
+    location ~ ^/api/(login|register|forgot-password|reset-password|email/verify)$ {
+        limit_req zone=login_limit burst=10 nodelay;
+        proxy_pass http://backend_upstream;
+    }
+
+    location /api/ {
+        limit_req zone=api_limit burst=60 nodelay;
+        proxy_pass http://backend_upstream;
+    }
+
+    location / {
+        proxy_pass http://frontend_upstream;
+    }
+}
