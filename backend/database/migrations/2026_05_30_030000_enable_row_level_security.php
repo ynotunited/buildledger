@@ -37,7 +37,7 @@ return new class extends Migration
             'proposal_items' => ['clause' => RowLevelSecurity::parentPolicy('proposals', 'proposal_id')],
             'contracts' => ['clause' => RowLevelSecurity::userOrPublicTokenPolicy('user_id', 'signing_token')],
             'invoices' => ['clause' => RowLevelSecurity::userOrPublicTokenPolicy('user_id', 'public_payment_token')],
-            'invoice_items' => ['clause' => $this->ownedByUserOrPublicInvoiceClause('invoice_items', 'invoice_id')],
+            'invoice_items' => ['clause' => $this->ownedByUserOrPublicInvoiceItemClause()],
             'projects' => ['clause' => RowLevelSecurity::userPolicy()],
             'tasks' => ['clause' => RowLevelSecurity::parentPolicy('projects', 'project_id')],
             'payments' => ['clause' => $this->ownedByUserOrPublicInvoiceClause('payments', 'invoice_id')],
@@ -116,6 +116,17 @@ return new class extends Migration
             RowLevelSecurity::userPolicy("{$table}.user_id"),
             $table,
             $invoiceForeignKeyColumn,
+            $publicToken
+        );
+    }
+
+    private function ownedByUserOrPublicInvoiceItemClause(): string
+    {
+        $publicToken = "nullif(current_setting('app.public_access_token', true), '')::uuid";
+
+        return sprintf(
+            "current_setting('app.user_role', true) = 'admin' OR EXISTS (SELECT 1 FROM invoices WHERE invoices.id = invoice_items.invoice_id AND (%s OR (current_setting('app.access_mode', true) = 'public' AND invoices.public_payment_token = %s)))",
+            RowLevelSecurity::userPolicy('invoices.user_id'),
             $publicToken
         );
     }
