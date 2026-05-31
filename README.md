@@ -95,6 +95,7 @@ For details, see:
 - `docs/SECURE_DEPLOYMENT.md`
 - `docs/OPERATIONS_RUNBOOK.md`
 - `docs/SECRETS_AUDIT.md`
+- `docs/OBSERVABILITY_SETUP.md`
 
 ## License
 
