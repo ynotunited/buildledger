@@ -27,13 +27,21 @@ function getPosthogHost(): string {
   return process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
 }
 
+function isPlaceholderPosthogKey(key: string): boolean {
+  const normalized = key.trim().toLowerCase();
+
+  return normalized.length === 0
+    || normalized.startsWith("your_")
+    || normalized.includes("placeholder");
+}
+
 function ensurePosthogInitialized() {
   if (typeof window === "undefined" || posthogInitialized || posthogUnavailable) {
     return;
   }
 
   const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-  if (!key) {
+  if (!key || isPlaceholderPosthogKey(key)) {
     posthogUnavailable = true;
     return;
   }
