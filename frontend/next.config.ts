@@ -15,8 +15,11 @@ const safeOrigin = (value: string | undefined | null): string | null => {
 const backendOrigin = safeOrigin(process.env.NEXT_PUBLIC_API_URL);
 const sentryOrigin = safeOrigin(process.env.NEXT_PUBLIC_SENTRY_DSN);
 const posthogOrigin = safeOrigin(process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com");
+const posthogAssetsOrigin = posthogOrigin
+  ? posthogOrigin.replace(".i.posthog.com", "-assets.i.posthog.com")
+  : null;
 
-const connectSrcOrigins = [backendOrigin, sentryOrigin, posthogOrigin].filter(
+const connectSrcOrigins = [backendOrigin, sentryOrigin, posthogOrigin, posthogAssetsOrigin].filter(
   (origin): origin is string => Boolean(origin),
 );
 
