@@ -1,18 +1,24 @@
 import type { NextConfig } from "next";
 
-const backendOrigin = (() => {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  if (!apiUrl) {
+const safeOrigin = (value: string | undefined | null): string | null => {
+  if (!value) {
     return null;
   }
 
   try {
-    return new URL(apiUrl).origin;
+    return new URL(value).origin;
   } catch {
     return null;
   }
-})();
+};
+
+const backendOrigin = safeOrigin(process.env.NEXT_PUBLIC_API_URL);
+const sentryOrigin = safeOrigin(process.env.NEXT_PUBLIC_SENTRY_DSN);
+const posthogOrigin = safeOrigin(process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com");
+
+const connectSrcOrigins = [backendOrigin, sentryOrigin, posthogOrigin].filter(
+  (origin): origin is string => Boolean(origin),
+);
 
 const scriptSrc = process.env.NODE_ENV === "production"
   ? "script-src 'self' 'unsafe-inline'"
@@ -28,7 +34,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data: blob: https:${backendOrigin ? ` ${backendOrigin}` : ""}`,
   "font-src 'self' data:",
-  `connect-src 'self'${backendOrigin ? ` ${backendOrigin}` : ""}`,
+  `connect-src 'self'${connectSrcOrigins.length ? ` ${connectSrcOrigins.join(" ")}` : ""}`,
 ].join("; ");
 
 const nextConfig: NextConfig = {
