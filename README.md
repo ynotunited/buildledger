@@ -38,6 +38,8 @@ Local URLs:
 - Frontend: `http://localhost:3000`
 - Backend: `http://localhost:8000`
 
+For a full step-by-step localhost walkthrough, see [docs/LOCALHOST_GUIDE.md](docs/LOCALHOST_GUIDE.md).
+
 ## Environment setup
 
 Each app uses its own `.env` file.
