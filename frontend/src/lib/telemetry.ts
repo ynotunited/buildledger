@@ -112,7 +112,11 @@ export async function trackEvent(eventName: string, properties: Record<string, u
   }
 
   ensurePosthogInitialized();
-  await ensureCsrfCookie();
+  try {
+    await ensureCsrfCookie();
+  } catch {
+    return;
+  }
 
   const payload = {
     event_name: eventName,
@@ -162,7 +166,11 @@ export async function captureFrontendError(payload: {
     return;
   }
 
-  await ensureCsrfCookie();
+  try {
+    await ensureCsrfCookie();
+  } catch {
+    return;
+  }
 
   try {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/telemetry/frontend-errors`, {
