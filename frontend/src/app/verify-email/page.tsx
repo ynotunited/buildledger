@@ -7,6 +7,7 @@ import { AxiosError } from "axios";
 import axiosInstance from "@/lib/axios";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
@@ -52,6 +53,9 @@ function VerifyEmailContent() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
+          <div className="mb-2 flex justify-center">
+            <BrandLogo href="/" variant="color" className="h-10 w-auto" />
+          </div>
           <CardTitle>Email verification</CardTitle>
           <CardDescription>{email || "BuildLedger account"}</CardDescription>
         </CardHeader>

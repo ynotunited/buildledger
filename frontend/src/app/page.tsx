@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, BadgeCheck, Briefcase, CreditCard, FileText, Sparkles, Users } from "lucide-react";
 import InviteOnlyBanner from "@/components/marketing/InviteOnlyBanner";
 import WaitlistSignupForm from "@/components/marketing/WaitlistSignupForm";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 const FEATURES = [
   {
@@ -66,7 +67,7 @@ export default function Home() {
       <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-6 py-8">
         <header className="landing-fade-up flex items-center justify-between gap-4" style={{ animationDelay: "0.05s" }}>
           <div className="landing-float min-w-0 shrink" style={{ animationDuration: "7s" }}>
-            <p className="text-sm font-medium uppercase tracking-[0.3em] text-emerald-300/80">BuildLedger</p>
+            <BrandLogo href="/" variant="white" className="h-8 w-auto" priority />
             <p className="mt-1 text-xs text-zinc-400 sm:text-sm">From proposal to payment.</p>
           </div>
           <div className="flex shrink-0 items-center gap-2">
@@ -281,7 +282,7 @@ export default function Home() {
           <div className="flex flex-col items-center gap-5 text-center">
             {/* Brand + copyright on one line */}
             <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
-              <span className="text-sm font-medium uppercase tracking-[0.2em] text-emerald-300/80">BuildLedger</span>
+              <BrandLogo href="/" variant="white" className="h-6 w-auto" />
               <span className="text-zinc-600">·</span>
               <span className="text-sm text-zinc-500">© {new Date().getFullYear()} Webxpress Technologies MadeIT</span>
             </div>

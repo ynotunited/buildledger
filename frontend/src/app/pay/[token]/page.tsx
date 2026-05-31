@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axios";
 import { extractResource } from "@/lib/api";
 import { getOrCreateIdempotencyKey } from "@/lib/idempotency";
 import { Button } from "@/components/ui/button";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 type PublicInvoiceItem = {
   name: string;
@@ -144,9 +144,7 @@ export default function PublicInvoicePage({ params }: { params: { token: string 
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.18),transparent_35%),linear-gradient(180deg,#08111f_0%,#0b1020_100%)] px-4 py-8 text-white">
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex items-center justify-between text-sm text-white/70">
-          <Link href="/" className="font-medium text-white">
-            BuildLedger
-          </Link>
+          <BrandLogo href="/" variant="white" className="h-7 w-auto" priority />
           <span>Secure invoice payment</span>
         </div>
 

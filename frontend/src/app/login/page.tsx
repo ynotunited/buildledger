@@ -9,6 +9,7 @@ import { AxiosError } from "axios";
 import { getPostLoginRedirect } from "@/lib/auth";
 import { useAuth } from "@/components/auth/AuthProvider";
 import InviteOnlyBanner from "@/components/marketing/InviteOnlyBanner";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 // 4K dark mountain landscape — served locally from /public
 const BG_IMAGE = "/auth-bg.png";
@@ -80,9 +81,7 @@ function LoginPageContent() {
 
         {/* Top bar */}
         <div className="relative z-10 flex items-center justify-between px-8 pt-8">
-          <span className="text-lg font-semibold uppercase tracking-[0.25em] text-white">
-            BuildLedger
-          </span>
+          <BrandLogo href="/" variant="white" className="h-8 w-auto" priority />
           <Link
             href="/"
             className="flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
@@ -108,9 +107,8 @@ function LoginPageContent() {
       {/* ── Right panel — form ── */}
       <div className="flex flex-1 flex-col items-center justify-center px-6 py-12">
         {/* Mobile logo */}
-        <div className="mb-8 flex items-center gap-2 lg:hidden">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-sm font-bold text-white">B</div>
-          <span className="text-base font-semibold tracking-wide text-white">BuildLedger</span>
+        <div className="mb-8 lg:hidden">
+          <BrandLogo href="/" variant="white" className="h-8 w-auto" priority />
         </div>
 
         <div className="w-full max-w-md">

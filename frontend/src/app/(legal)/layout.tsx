@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 export default function LegalLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,9 +15,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
             <ArrowLeft className="h-4 w-4" />
             Back to BuildLedger
           </Link>
-          <span className="text-sm font-medium uppercase tracking-[0.25em] text-emerald-300/70">
-            BuildLedger
-          </span>
+          <BrandLogo href="/" variant="white" className="h-6 w-auto" />
         </div>
       </div>
 

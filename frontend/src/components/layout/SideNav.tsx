@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth/AuthProvider";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 export default function SideNav() {
   const pathname = usePathname();
@@ -33,11 +34,8 @@ export default function SideNav() {
   return (
     <div className="flex flex-col h-full py-6 px-4">
       {/* Logo */}
-      <div className="flex items-center gap-2 mb-10 px-2">
-        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-          <span className="text-primary-foreground font-bold text-lg">B</span>
-        </div>
-        <span className="font-semibold text-lg tracking-tight">BuildLedger</span>
+      <div className="mb-10 px-2">
+        <BrandLogo href="/dashboard" variant="color" className="h-10 w-auto max-w-[11rem]" />
       </div>
 
       {/* Nav links */}

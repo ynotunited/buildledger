@@ -99,11 +99,20 @@ Update `backend/.env` with production values:
 - `DB_DATABASE=buildledger`
 - `DB_USERNAME=buildledger`
 - `DB_PASSWORD=...`
+- `REDIS_HOST=127.0.0.1`
+- `REDIS_PASSWORD=` if your Redis server does not use a password
 - `SESSION_DOMAIN=.madeitcodes.online`
 - `SANCTUM_STATEFUL_DOMAINS=buildledger.madeitcodes.online,api.buildledger.madeitcodes.online`
 - `GOOGLE_REDIRECT_URI=https://api.buildledger.madeitcodes.online/api/auth/google/callback`
 
 Also set your mail, payment, and gateway secrets.
+
+If `php artisan cache:clear` still fails with a Redis name-resolution error, make sure the Redis service is running:
+
+```bash
+systemctl enable --now redis-server
+systemctl status redis-server
+```
 
 Important: any `.env` value with spaces must be wrapped in quotes. For example:
 
@@ -246,11 +255,39 @@ Run these line by line.
 
 ```bash
 curl -I https://buildledger.madeitcodes.online
-curl -I https://api.buildledger.madeitcodes.online/up
 curl -I https://api.buildledger.madeitcodes.online/readyz
 ```
 
 If those return healthy responses, the app is live.
+
+If `/up` returns 500 but `/readyz` returns 200, treat `/readyz` as the authoritative readiness check for BuildLedger. The app is still up; `/up` is the framework health route and may be affected by middleware or server configuration.
+
+If the server checks are healthy but your browser shows `ERR_CONNECTION_RESET`, test from the Windows machine itself:
+
+```powershell
+ipconfig /flushdns
+nslookup buildledger.madeitcodes.online
+```
+
+Make sure the DNS lookup returns the VPS IP, then try another browser or Incognito mode. If a VPN, proxy, antivirus web shield, or corporate firewall is enabled, disable it briefly and test again.
+
+If `/readyz` returns `500`, run these backend checks:
+
+```bash
+cd /var/www/buildledger/backend
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
+php artisan optimize
+php artisan tinker --execute="dump(config('database.default'), config('cache.default'), config('session.driver'), config('security.row_level_security_required'), config('ops.payments_enabled'));"
+```
+
+Then retry:
+
+```bash
+curl -I https://api.buildledger.madeitcodes.online/readyz
+```
 
 ## 13. Future updates
 
