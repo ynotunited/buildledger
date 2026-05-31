@@ -6,6 +6,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "BuildLedger | Business OS for Digital Agencies",
   description: "Run your digital business from one place. From proposal to payment.",
+  icons: {
+    icon: "/icon.png",
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({
