@@ -24,8 +24,8 @@ const connectSrcOrigins = [backendOrigin, sentryOrigin, posthogOrigin, posthogAs
 );
 
 const scriptSrc = process.env.NODE_ENV === "production"
-  ? "script-src 'self' 'unsafe-inline'"
-  : "script-src 'self' 'unsafe-inline' 'unsafe-eval'";
+  ? `script-src 'self' 'unsafe-inline'${posthogAssetsOrigin ? ` ${posthogAssetsOrigin}` : ""}`
+  : `script-src 'self' 'unsafe-inline' 'unsafe-eval'${posthogAssetsOrigin ? ` ${posthogAssetsOrigin}` : ""}`;
 
 const csp = [
   "default-src 'self'",
