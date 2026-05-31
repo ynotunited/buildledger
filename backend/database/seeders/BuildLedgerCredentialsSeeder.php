@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class BuildLedgerCredentialsSeeder extends Seeder
 {
@@ -39,7 +38,7 @@ class BuildLedgerCredentialsSeeder extends Seeder
                 ['email' => $userData['email']],
                 [
                     'name' => $userData['name'],
-                    'password' => Hash::make($userData['password']),
+                    'password' => $userData['password'],
                     'role' => $userData['role'],
                     'email_verified_at' => now(),
                     'trial_ends_at' => now()->addYears(10),
