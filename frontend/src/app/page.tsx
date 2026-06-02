@@ -7,35 +7,61 @@ import BrandLogo from "@/components/brand/BrandLogo";
 const FEATURES = [
   {
     title: "Clients",
-    description: "Keep customer records, statuses, and contact history in one place.",
+    description: "Keep a live picture of who owes you money, what they approved, and what needs follow-up.",
     icon: Users,
   },
   {
     title: "Proposals",
-    description: "Turn scope and pricing into polished documents your clients can approve fast.",
+    description: "Turn scope and pricing into polished approvals clients can say yes to without the usual back-and-forth.",
     icon: FileText,
   },
   {
     title: "Projects",
-    description: "Track delivery with a simple board built around real agency workflows.",
+    description: "Track delivery, deadlines, and bottlenecks without losing sight of the money attached to the work.",
     icon: Briefcase,
   },
   {
     title: "Payments",
-    description: "Follow invoices, payment links, and completed revenue without leaving the app.",
+    description: "See paid, pending, and overdue money from one dashboard instead of chasing it across tabs.",
     icon: CreditCard,
   },
 ];
 
+const WORKFLOW_STEPS = [
+  {
+    step: "01",
+    title: "Proposal",
+    description: "Turn scope into a clean approval step clients can sign off on faster.",
+  },
+  {
+    step: "02",
+    title: "Contract",
+    description: "Lock expectations before work starts so clients and teams stay aligned.",
+  },
+  {
+    step: "03",
+    title: "Invoice",
+    description: "Send polished invoices and payment links with fewer follow-up messages.",
+  },
+  {
+    step: "04",
+    title: "Payment",
+    description: "Know what cleared, what is pending, and what still needs a nudge.",
+  },
+] as const;
+
 const PRICING = [
   {
-    name: "Free trial",
-    price: "₦0",
-    period: "for 30 days",
-    eyebrow: "Try before you pay",
-    description: "Approved invites unlock your 30-day trial so you can see how the full workflow feels before you subscribe.",
-    highlights: ["Clients, proposals, invoices, projects", "Public contract and invoice links", "Email verification and support inbox"],
-    cta: "Request invite",
+    name: "Starter",
+    price: "₦10,000",
+    period: "per month",
+    annualPrice: "₦96,000",
+    annualPeriod: "per year",
+    eyebrow: "For independents",
+    description: "A polished workspace for independent operators who want proposals, contracts, invoices, and follow-ups in one place.",
+    highlights: ["A single operating layer for client work", "Faster approvals and payment follow-up", "A clearer path from proposal to cash"],
+    note: "Save ₦24,000 annually with yearly billing.",
+    cta: "Request access",
     href: "#waitlist",
     featured: false,
   },
@@ -45,12 +71,27 @@ const PRICING = [
     period: "per month",
     annualPrice: "₦240,000",
     annualPeriod: "per year",
-    eyebrow: "Best for growing agencies",
-    description: "Once invited, you can unlock analytics, premium support, and a plan that can grow with you.",
-    highlights: ["Everything in the free trial", "Analytics and operational reporting", "Priority support and stronger governance"],
-    cta: "Request invite",
+    eyebrow: "For growing teams",
+    description: "Built for teams that want visibility into profitability, delivery, and revenue without slowing the work down.",
+    highlights: ["See who owes you money and which projects actually pay", "Analytics and operational reporting", "Priority support and governance"],
+    note: "Save ₦60,000 annually with yearly billing.",
+    cta: "Request access",
     href: "#waitlist",
     featured: true,
+  },
+  {
+    name: "Agency",
+    price: "₦50,000",
+    period: "per month",
+    annualPrice: "₦480,000",
+    annualPeriod: "per year",
+    eyebrow: "For established studios",
+    description: "Designed for larger teams that need tighter oversight, heavier client volume, and a more hands-on rollout.",
+    highlights: ["Built for heavier client loads", "Sharper visibility across accounts and teams", "Concierge-style onboarding and support"],
+    note: "Save ₦120,000 annually with yearly billing.",
+    cta: "Request access",
+    href: "#waitlist",
+    featured: false,
   },
 ] as const;
 
@@ -81,8 +122,8 @@ export default function Home() {
               href="#waitlist"
               className="rounded-full bg-emerald-400 px-3 py-1.5 text-xs font-medium text-zinc-950 transition-transform hover:-translate-y-0.5 sm:px-4 sm:py-2 sm:text-sm"
             >
-              <span className="sm:hidden">Request invite</span>
-              <span className="hidden sm:inline">Request invite</span>
+              <span className="sm:hidden">Request access</span>
+              <span className="hidden sm:inline">Request access</span>
             </Link>
           </div>
         </header>
@@ -92,20 +133,20 @@ export default function Home() {
           <div className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
               <div className="landing-fade-up inline-flex items-center rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200" style={{ animationDelay: "0.12s" }}>
-                Built for agencies, freelancers, and digital teams
+                Built for agencies, studios, and independent operators
               </div>
               <h1 className="landing-fade-up mt-6 max-w-3xl text-5xl font-semibold tracking-tight text-balance sm:text-6xl" style={{ animationDelay: "0.18s" }}>
-                Run client work, documents, and revenue from one operating system.
+                Run client operations from one calm, premium workspace.
               </h1>
               <p className="landing-fade-up mt-6 max-w-2xl text-lg leading-8 text-zinc-300" style={{ animationDelay: "0.26s" }}>
-                BuildLedger keeps your pipeline connected so proposals, contracts, invoices, projects, and payments stop living in different tools.
+                BuildLedger keeps your proposals, contracts, invoices, projects, and payments in one connected flow so your team always knows what is next.
               </p>
               <div className="landing-fade-up mt-8 flex flex-col gap-3 sm:flex-row" style={{ animationDelay: "0.34s" }}>
                 <Link
                   href="#waitlist"
                   className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-medium text-zinc-950 transition-transform hover:-translate-y-0.5"
                 >
-                  Request invite
+                  Request access
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
@@ -187,30 +228,68 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="landing-fade-up mt-10 rounded-[2.25rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur" style={{ animationDelay: "0.44s" }}>
+          <div className="flex flex-col gap-4 border-b border-white/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">
+                <Sparkles className="h-3.5 w-3.5" />
+                Workflow proof
+              </div>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+                From proposal to payment, the flow stays visible.
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">
+                BuildLedger is designed to reduce client chaos, not just collect feature checkboxes. One client project can fund a full year of BuildLedger.
+              </p>
+            </div>
+            <div className="rounded-3xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100">
+              One client project can fund a full year of BuildLedger.
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {WORKFLOW_STEPS.map((step) => (
+              <article key={step.step} className="rounded-[1.75rem] border border-white/10 bg-black/20 p-5">
+                <div className="flex items-center justify-between">
+                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold tracking-[0.22em] text-zinc-200">
+                    {step.step}
+                  </span>
+                  <ArrowRight className="h-4 w-4 text-zinc-500" />
+                </div>
+                <h3 className="mt-6 text-xl font-semibold">{step.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-zinc-400">{step.description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section id="pricing" className="landing-fade-up mt-10 rounded-[2.25rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur" style={{ animationDelay: "0.46s" }}>
           <div className="flex flex-col gap-4 border-b border-white/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">
                 <Sparkles className="h-3.5 w-3.5" />
-                Simple pricing, no surprise fees
+                Pricing built around outcomes
               </div>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                Approved invites unlock a 30-day trial, then you choose monthly or annual billing.
+                Approved invites still unlock a 30-day trial. After that, the ladder starts at Starter and scales to Agency.
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">
-                BuildLedger opens by invitation so we can onboard teams in batches. Once approved, you get a 30-day trial. When you’re ready, Growth unlocks analytics and the rest of the operational toolkit, with annual pricing for teams that want to save more over time.
+                BuildLedger opens by invitation so we can onboard teams in batches. Once approved, you get a trial first, then choose the tier that fits the pace and complexity of your client work.
               </p>
+              <div className="mt-5 rounded-3xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-zinc-200">
+                One client project can fund a full year of BuildLedger.
+              </div>
             </div>
             <Link
               href="#waitlist"
               className="inline-flex w-fit items-center gap-2 rounded-2xl border border-white/12 bg-white/8 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-white/20 hover:bg-white/12"
             >
-              Request invite
+              Request access
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
-          <div className="mt-6 grid gap-4 xl:grid-cols-2">
+          <div className="mt-6 grid gap-4 xl:grid-cols-3">
             {PRICING.map((plan) => (
               <article
                 key={plan.name}
@@ -234,20 +313,12 @@ export default function Home() {
                 <div className="mt-6 flex flex-wrap items-end gap-x-3 gap-y-2">
                   <span className="text-4xl font-semibold">{plan.price}</span>
                   <span className="pb-1 text-sm text-zinc-400">{plan.period}</span>
-                  {plan.featured ? (
-                    <span className="pb-1 text-sm text-zinc-500">or {plan.annualPrice} {plan.annualPeriod}</span>
-                  ) : null}
+                  <span className="pb-1 text-sm text-zinc-500">or {plan.annualPrice} {plan.annualPeriod}</span>
                 </div>
 
-                {plan.featured ? (
-                  <p className="mt-2 text-xs text-emerald-200/80">
-                    Save ₦60,000 per year when you choose annual billing.
-                  </p>
-                ) : (
-                  <p className="mt-2 text-xs text-zinc-500">
-                    No card required during the trial period.
-                  </p>
-                )}
+                <p className={["mt-2 text-xs", plan.featured ? "text-emerald-200/80" : "text-zinc-500"].join(" ")}>
+                  {plan.note}
+                </p>
 
                 <ul className="mt-6 space-y-2">
                   {plan.highlights.map((item) => (
