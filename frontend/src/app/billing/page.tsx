@@ -55,6 +55,7 @@ export default function BillingPage() {
   }, []);
 
   const plans = Array.isArray(state?.plans) ? state.plans : state?.plans?.data ?? [];
+  const paidPlans = plans.filter((plan) => plan.price_ngn > 0);
 
   const beginCheckout = async (planCode: string) => {
     setProcessingPlan(planCode);
@@ -65,16 +66,20 @@ export default function BillingPage() {
         billingInterval,
       });
 
-      const response = await axiosInstance.post("/billing/checkout", {
-        plan_code: planCode,
-        gateway,
-        billing_interval: billingInterval,
-        idempotency_key: idempotencyKey,
-      }, {
-        headers: {
-          "Idempotency-Key": idempotencyKey,
+      const response = await axiosInstance.post(
+        "/billing/checkout",
+        {
+          plan_code: planCode,
+          gateway,
+          billing_interval: billingInterval,
+          idempotency_key: idempotencyKey,
         },
-      });
+        {
+          headers: {
+            "Idempotency-Key": idempotencyKey,
+          },
+        }
+      );
 
       if (response.data.authorization_url) {
         window.location.assign(response.data.authorization_url);
@@ -109,7 +114,7 @@ export default function BillingPage() {
         <section className="rounded-[2rem] border border-white/10 bg-card p-6 md:p-8">
           <h1 className="text-3xl font-semibold tracking-tight">Billing & paywall</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Manage your subscription, upgrade for analytics, and route plan payments through your existing gateways.
+            Manage your subscription, compare the paid ladder, and route plan payments through your existing gateways.
           </p>
           {state?.current_plan ? (
             <div className="mt-5 rounded-2xl border border-white/10 bg-background/60 px-4 py-3 text-sm">
@@ -134,7 +139,7 @@ export default function BillingPage() {
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <h2 className="text-xl font-semibold">Choose payment gateway</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Subscription upgrades use the same gateway stack as invoice collection.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Your invite-only trial stays separate; the cards below are the paid plans.</p>
             </div>
             <div className="flex flex-col gap-3 md:flex-row">
               <select
@@ -161,15 +166,13 @@ export default function BillingPage() {
           <div className="rounded-[2rem] border border-white/10 bg-card p-6 text-sm text-muted-foreground">Loading plans...</div>
         ) : (
           <section className="grid gap-4 lg:grid-cols-2">
-            {plans.map((plan) => {
-              const hasTrial = Boolean(state?.trial_ends_at);
+            {paidPlans.map((plan) => {
               const isCurrentPlan = state?.current_plan?.code === plan.code;
               const currentBillingInterval = state?.subscription?.billing_interval ?? null;
               const isActiveWithSameInterval =
                 state?.subscription?.status === "active" &&
                 isCurrentPlan &&
                 currentBillingInterval === billingInterval;
-              const isStarterLocked = plan.price_ngn === 0 && hasTrial;
               const displayPrice = billingInterval === "annual"
                 ? (plan.price_annually_ngn ?? plan.price_ngn * 12)
                 : plan.price_ngn;
@@ -188,10 +191,8 @@ export default function BillingPage() {
                     ) : null}
                   </div>
                   <p className="mt-6 text-4xl font-semibold">
-                    {displayPrice === 0 ? "Free" : `₦${displayPrice.toLocaleString("en-NG")}`}
-                    <span className="ml-2 text-sm font-normal text-muted-foreground">
-                      {plan.price_ngn === 0 ? "/trial" : `/${displayPeriod}`}
-                    </span>
+                    {`₦${displayPrice.toLocaleString("en-NG")}`}
+                    <span className="ml-2 text-sm font-normal text-muted-foreground">/{displayPeriod}</span>
                   </p>
                   <div className="mt-6 space-y-2">
                     {plan.features.map((feature) => (
@@ -202,22 +203,16 @@ export default function BillingPage() {
                   </div>
                   <button
                     onClick={() => void beginCheckout(plan.code)}
-                    disabled={processingPlan === plan.code || isActiveWithSameInterval || isStarterLocked}
+                    disabled={processingPlan === plan.code || isActiveWithSameInterval}
                     className="mt-6 inline-flex rounded-2xl bg-primary px-5 py-3 text-sm font-medium text-primary-foreground disabled:opacity-60"
                   >
                     {processingPlan === plan.code
                       ? "Processing..."
-                      : isStarterLocked && plan.price_ngn === 0
-                        ? state?.current_plan?.code === "starter"
-                          ? "Trial active"
-                          : "Trial unavailable"
-                        : isActiveWithSameInterval
-                          ? "Active plan"
-                          : plan.price_ngn === 0
-                            ? "Start free trial"
-                            : isCurrentPlan && currentBillingInterval !== billingInterval
-                              ? `Switch to ${billingInterval === "annual" ? "annual" : "monthly"} billing`
-                              : "Upgrade now"}
+                      : isActiveWithSameInterval
+                        ? "Active plan"
+                        : isCurrentPlan && currentBillingInterval !== billingInterval
+                          ? `Switch to ${billingInterval === "annual" ? "annual" : "monthly"} billing`
+                          : "Upgrade now"}
                   </button>
                 </div>
               );
