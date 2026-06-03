@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: "How BuildLedger collects, uses, and protects your personal data.",
 };
 
-const LAST_UPDATED = "25 May 2026";
+const LAST_UPDATED = "03 June 2026";
 
 export default function PrivacyPolicyPage() {
   return (
