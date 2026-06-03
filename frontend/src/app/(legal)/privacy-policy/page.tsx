@@ -45,6 +45,14 @@ export default function PrivacyPolicyPage() {
         <SubSection title="2.5 Cookies">
           <p>We use strictly necessary cookies for session management. We do not use advertising or tracking cookies.</p>
         </SubSection>
+        <SubSection title="2.6 Google Sign-In Data">
+          <p>
+            If you choose to sign in with Google, we receive only the information required to authenticate your
+            account through Google Sign-In: your Google account email address, your display name, and Google&apos;s
+            unique account identifier for that user. We do not request or access your Google contacts, calendar,
+            Drive files, Gmail content, or other Google services.
+          </p>
+        </SubSection>
       </Section>
 
       <Section title="3. How We Use Your Data">
@@ -53,13 +61,20 @@ export default function PrivacyPolicyPage() {
           <li>To send transactional emails (invoice notifications, contract signing alerts, payment confirmations).</li>
           <li>To detect and prevent fraud, abuse, and security incidents.</li>
           <li>To comply with legal obligations.</li>
+          <li>To create, sign in, verify, and link your BuildLedger account when you use Google Sign-In.</li>
         </ul>
         <p>We do not sell your data to third parties. We do not use your business data to train AI models.</p>
+        <p>
+          Google user data accessed through Sign-In is used only for authentication, account creation or linking,
+          invite eligibility, and account security. We do not use Google user data for advertising, profiling, or
+          unrelated secondary purposes.
+        </p>
       </Section>
 
       <Section title="4. Data Sharing">
         <p>We share data only with the following categories of third parties, and only to the extent necessary:</p>
         <ul>
+          <li><strong>Google OAuth services</strong> — to authenticate your Google account and verify your sign-in token.</li>
           <li><strong>Payment processors</strong> — Paystack, Flutterwave (for payment initiation and verification).</li>
           <li><strong>Cloud infrastructure</strong> — hosting providers for servers and file storage.</li>
           <li><strong>Email delivery</strong> — transactional email providers for notification delivery.</li>
