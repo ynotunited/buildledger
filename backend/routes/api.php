@@ -7,6 +7,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Resources\AuthUserResource;
 
+Route::get('/version', function () {
+    return response()->json([
+        'name' => config('app.name'),
+        'version' => config('app.version'),
+        'environment' => config('app.env'),
+    ]);
+});
+
 Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register');
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:password-reset');
