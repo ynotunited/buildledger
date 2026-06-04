@@ -3,9 +3,13 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use App\Support\ApplicationErrorRecorder;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Sentry\Laravel\Integration;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -40,17 +44,38 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         Integration::handles($exceptions);
+        $resolveStatusCode = static function (\Throwable $exception): int {
+            if ($exception instanceof AuthenticationException) {
+                return 401;
+            }
+
+            if ($exception instanceof TokenMismatchException) {
+                return 419;
+            }
+
+            if ($exception instanceof ValidationException) {
+                return 422;
+            }
+
+            if ($exception instanceof HttpExceptionInterface) {
+                return $exception->getStatusCode();
+            }
+
+            if (method_exists($exception, 'getStatusCode')) {
+                return (int) $exception->getStatusCode();
+            }
+
+            return 500;
+        };
 
         // Return JSON for all API exceptions
         $exceptions->shouldRenderJsonWhen(function ($request) {
             return $request->is('api/*') || $request->expectsJson();
         });
 
-        $exceptions->render(function (\Throwable $exception, Request $request) {
+        $exceptions->render(function (\Throwable $exception, Request $request) use ($resolveStatusCode) {
             if ($request->is('api/*') || $request->expectsJson()) {
-                $status = method_exists($exception, 'getStatusCode')
-                    ? $exception->getStatusCode()
-                    : 500;
+                $status = $resolveStatusCode($exception);
 
                 if ($status >= 500) {
                     Log::channel('api')->error('Unhandled API exception.', [
