@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import AppShell from "@/components/layout/AppShell";
@@ -584,6 +585,12 @@ export default function AdminPage() {
               <p className="text-xs text-muted-foreground">
                 Source: {data?.invite_mode?.source ?? "loading"} · Updated: {formatDate(data?.invite_mode?.updated_at)}
               </p>
+              <Link
+                href="/admin/security-operations"
+                className="inline-flex items-center rounded-full border border-white/10 px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+              >
+                Open Security Operations
+              </Link>
             </CardContent>
           </Card>
         </div>
