@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import BrandLogo from "@/components/brand/BrandLogo";
+import { APP_VERSION_LABEL } from "@/lib/app-version";
 
 export default function LegalLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -30,6 +31,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
           <span className="text-sm text-zinc-500">
             © {new Date().getFullYear()} | Webxpress Technologies MadeIT
           </span>
+          <span className="text-[11px] uppercase tracking-[0.22em] text-zinc-600">{APP_VERSION_LABEL}</span>
           <nav className="flex flex-wrap items-center justify-center gap-5">
             <Link href="/privacy-policy"   className="text-xs text-zinc-500 transition-colors hover:text-zinc-300">Privacy Policy</Link>
             <Link href="/terms-of-use"     className="text-xs text-zinc-500 transition-colors hover:text-zinc-300">Terms of Use</Link>
