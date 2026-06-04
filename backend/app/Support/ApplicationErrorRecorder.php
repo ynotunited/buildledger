@@ -11,7 +11,12 @@ class ApplicationErrorRecorder
     public static function record(array $payload): void
     {
         try {
-            ApplicationError::create($payload);
+            RowLevelSecurity::runWithContext([
+                'app.user_id' => '',
+                'app.user_role' => '',
+                'app.access_mode' => 'public',
+                'app.public_access_token' => '',
+            ], fn () => ApplicationError::create($payload));
         } catch (\Throwable $exception) {
             Log::channel('api')->warning('Failed to persist application error.', [
                 'message' => $payload['message'] ?? 'unknown',
