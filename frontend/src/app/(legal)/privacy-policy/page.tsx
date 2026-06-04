@@ -84,9 +84,21 @@ export default function PrivacyPolicyPage() {
 
       <Section title="5. Data Retention">
         <p>
-          We retain your account and business data for as long as your account is active. If you delete your account,
-          we will delete or anonymise your personal data within 30 days, except where retention is required by law
-          (e.g. financial records may be retained for up to 7 years).
+          We retain personal data only for as long as is reasonably necessary to fulfil the purposes for which it
+          was collected, or for as long as retention is required or permitted by applicable law, regulation, tax,
+          accounting, fraud prevention, dispute resolution, or security obligations. In ordinary operation,
+          account-related data is retained while the account remains active.
+        </p>
+        <p>
+          Where you request deletion or close your account, we will delete or anonymise personal data from active
+          systems within 30 days of confirming the request, except where we are required or permitted to retain
+          certain records for legal, regulatory, tax, accounting, or security purposes. In such cases, we retain
+          only the minimum data necessary and restrict access to it accordingly.
+        </p>
+        <p>
+          Backup copies are maintained on a rolling rotation schedule and are not used for day-to-day access.
+          Where deleted data remains present in a backup set, it will be removed or rendered inaccessible in
+          accordance with the applicable backup rotation and restoration procedures.
         </p>
       </Section>
 
@@ -99,7 +111,14 @@ export default function PrivacyPolicyPage() {
           <li>Export your data in a portable format.</li>
           <li>Object to or restrict certain processing activities.</li>
         </ul>
-        <p>To exercise any of these rights, email <a href="mailto:privacy@buildledger.com">privacy@buildledger.com</a>.</p>
+        <p>
+          To exercise any of these rights, email{" "}
+          <a href="mailto:privacy@buildledger.com">privacy@buildledger.com</a>.
+        </p>
+        <p>
+          We aim to respond to download, rectification, and deletion requests within 30 days of receiving a
+          complete request and any information reasonably required to verify your identity and process the request.
+        </p>
       </Section>
 
       <Section title="7. Security">
