@@ -3,6 +3,7 @@ import { ArrowRight, BadgeCheck, Briefcase, CreditCard, FileText, Sparkles, User
 import InviteOnlyBanner from "@/components/marketing/InviteOnlyBanner";
 import WaitlistSignupForm from "@/components/marketing/WaitlistSignupForm";
 import BrandLogo from "@/components/brand/BrandLogo";
+import { APP_VERSION_LABEL } from "@/lib/app-version";
 
 const FEATURES = [
   {
@@ -356,6 +357,8 @@ export default function Home() {
               <BrandLogo href="/" variant="white" className="h-6 w-auto" />
               <span className="text-zinc-600">·</span>
               <span className="text-sm text-zinc-500">© {new Date().getFullYear()} Webxpress Technologies MadeIT</span>
+              <span className="text-zinc-700">·</span>
+              <span className="text-xs uppercase tracking-[0.22em] text-zinc-600">{APP_VERSION_LABEL}</span>
             </div>
 
             {/* Legal links — single row, wraps gracefully */}
