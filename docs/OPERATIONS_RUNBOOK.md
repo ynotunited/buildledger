@@ -11,7 +11,7 @@ This app now includes a small operational toolkit for production support.
 ## Backups
 
 - `php artisan ops:backup`
-- Creates an encrypted JSON snapshot of the current database in the configured backup disk.
+- Creates an encrypted JSON snapshot of the current database and uploaded files in the configured backup disk.
 - Runs daily at 02:00 and prunes expired snapshots automatically.
 - Backups are retained for 30 days by default.
 
@@ -21,7 +21,7 @@ To restore a snapshot:
 
 Backup policy summary:
 
-- Database snapshots are encrypted before storage.
+- Database and uploaded-file snapshots are encrypted before storage.
 - Retention is rolling, with expired snapshots removed automatically.
 - Backup files are not used for day-to-day access.
 - Deleted data remains in backups only until the relevant snapshot ages out of the rotation.

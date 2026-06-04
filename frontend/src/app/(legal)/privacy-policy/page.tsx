@@ -97,9 +97,9 @@ export default function PrivacyPolicyPage() {
         </p>
         <p>
           Backup copies are maintained on a rolling rotation schedule and are not used for day-to-day access.
-          Backup snapshots are encrypted before storage. Where deleted data remains present in a backup set, it
-          will be removed or rendered inaccessible in accordance with the applicable backup rotation and
-          restoration procedures.
+          Backup snapshots, including uploaded files and company logos, are encrypted before storage. Where
+          deleted data remains present in a backup set, it will be removed or rendered inaccessible in
+          accordance with the applicable backup rotation and restoration procedures.
         </p>
       </Section>
 

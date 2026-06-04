@@ -25,13 +25,19 @@ class DatabaseBackupManager
             $tables[$table] = $rows;
         }
 
+        $files = $this->collectFileSnapshots();
+
         $payload = [
             'meta' => [
                 'database' => DB::getDatabaseName(),
                 'driver' => DB::getDriverName(),
                 'created_at' => now()->toIso8601String(),
+                'backup_id' => $timestamp,
+                'file_count' => count($files),
+                'missing_file_count' => collect($files)->where('missing', true)->count(),
             ],
             'tables' => $tables,
+            'files' => $files,
         ];
 
         $json = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
@@ -54,6 +60,8 @@ class DatabaseBackupManager
             'bytes' => strlen($json),
             'table_count' => count($tables),
             'record_count' => collect($tables)->sum(fn (array $rows) => count($rows)),
+            'file_count' => count($files),
+            'missing_file_count' => collect($files)->where('missing', true)->count(),
             'pruned_count' => count($prunedPaths),
         ];
     }
@@ -96,11 +104,133 @@ class DatabaseBackupManager
             Schema::enableForeignKeyConstraints();
         }
 
+        $files = is_array($payload['files'] ?? null) ? $payload['files'] : [];
+        $restoredFiles = $this->restoreFileSnapshots($files);
+
         return [
             'disk' => $disk,
             'path' => $path,
             'table_count' => count($tables),
             'record_count' => collect($payload['tables'])->sum(fn (array $rows) => count($rows)),
+            'file_count' => count($files),
+            'restored_file_count' => $restoredFiles['restored_count'],
+            'missing_file_count' => $restoredFiles['missing_count'],
+        ];
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function collectFileSnapshots(): array
+    {
+        $snapshots = [];
+
+        foreach (DB::table('project_files')->select(['id', 'disk', 'path', 'original_name', 'mime_type', 'size'])->get() as $row) {
+            $snapshots[] = $this->snapshotFile(
+                type: 'project_file',
+                sourceDisk: (string) ($row->disk ?? ''),
+                sourcePath: (string) ($row->path ?? ''),
+                meta: [
+                    'source_id' => $row->id,
+                    'original_name' => $row->original_name ?? null,
+                    'mime_type' => $row->mime_type ?? null,
+                    'size' => $row->size ?? null,
+                ],
+            );
+        }
+
+        foreach (DB::table('companies')->select(['id', 'logo_disk', 'logo_path', 'name'])->whereNotNull('logo_disk')->whereNotNull('logo_path')->get() as $row) {
+            $snapshots[] = $this->snapshotFile(
+                type: 'company_logo',
+                sourceDisk: (string) ($row->logo_disk ?? ''),
+                sourcePath: (string) ($row->logo_path ?? ''),
+                meta: [
+                    'source_id' => $row->id,
+                    'company_name' => $row->name ?? null,
+                    'original_name' => basename((string) $row->logo_path),
+                ],
+            );
+        }
+
+        return $snapshots;
+    }
+
+    /**
+     * @param  array<string, mixed>  $meta
+     * @return array<string, mixed>
+     */
+    private function snapshotFile(string $type, string $sourceDisk, string $sourcePath, array $meta): array
+    {
+        $snapshot = array_merge([
+            'type' => $type,
+            'disk' => $sourceDisk,
+            'path' => $sourcePath,
+            'missing' => false,
+            'contents' => null,
+        ], $meta);
+
+        if ($sourceDisk === '' || $sourcePath === '') {
+            $snapshot['missing'] = true;
+
+            return $snapshot;
+        }
+
+        try {
+            if (! Storage::disk($sourceDisk)->exists($sourcePath)) {
+                $snapshot['missing'] = true;
+
+                return $snapshot;
+            }
+
+            $snapshot['contents'] = base64_encode(Storage::disk($sourceDisk)->get($sourcePath));
+        } catch (\Throwable) {
+            $snapshot['missing'] = true;
+        }
+
+        return $snapshot;
+    }
+
+    /**
+     * @param  array<int, array<string, mixed>>  $files
+     * @return array{restored_count:int, missing_count:int}
+     */
+    private function restoreFileSnapshots(array $files): array
+    {
+        $restored = 0;
+        $missing = 0;
+
+        foreach ($files as $file) {
+            if (! is_array($file)) {
+                continue;
+            }
+
+            $disk = (string) ($file['disk'] ?? '');
+            $path = (string) ($file['path'] ?? '');
+            $contents = $file['contents'] ?? null;
+
+            if ($disk === '' || $path === '') {
+                $missing++;
+                continue;
+            }
+
+            if (! is_string($contents) || $contents === '') {
+                $missing++;
+                continue;
+            }
+
+            $decoded = base64_decode($contents, true);
+            if ($decoded === false) {
+                $missing++;
+                continue;
+            }
+
+            Storage::disk($disk)->put($path, $decoded);
+            $restored++;
+        }
+
+        return [
+            'restored_count' => $restored,
+            'missing_count' => $missing,
         ];
     }
 

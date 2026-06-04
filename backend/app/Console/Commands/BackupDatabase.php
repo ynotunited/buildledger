@@ -45,11 +45,16 @@ class BackupDatabase extends Command
             ]);
 
             $this->info(sprintf(
-                'Backup stored at %s (%d tables, %d records).',
+                'Backup stored at %s (%d tables, %d records, %d files).',
                 $result['path'],
                 $result['table_count'],
-                $result['record_count']
+                $result['record_count'],
+                $result['file_count'] ?? 0
             ));
+
+            if (($result['missing_file_count'] ?? 0) > 0) {
+                $this->warn(sprintf('Skipped %d missing file(s) during backup.', $result['missing_file_count']));
+            }
 
             if (($result['pruned_count'] ?? 0) > 0) {
                 $this->line(sprintf('Pruned %d expired backup(s).', $result['pruned_count']));

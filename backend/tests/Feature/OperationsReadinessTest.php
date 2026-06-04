@@ -3,7 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Client;
+use App\Models\Company;
 use App\Models\Invoice;
+use App\Models\Project;
+use App\Models\ProjectFile;
 use App\Models\OperationalEvent;
 use App\Models\Payment;
 use App\Models\PaymentLedgerEntry;
@@ -37,6 +40,56 @@ class OperationsReadinessTest extends TestCase
             'severity' => 'success',
             'source' => 'ops:backup',
         ]);
+    }
+
+    public function test_backup_command_includes_uploaded_files_and_logos(): void
+    {
+        Storage::fake('local');
+        Storage::fake('public');
+
+        $owner = User::factory()->create();
+        $client = Client::factory()->for($owner)->create();
+        $project = Project::create([
+            'user_id' => $owner->id,
+            'client_id' => $client->id,
+            'title' => 'Backup Test Project',
+            'description' => 'Backup test',
+            'status' => 'Active',
+            'start_date' => now()->subDay(),
+            'end_date' => now()->addDays(30),
+            'budget' => 500000,
+        ]);
+
+        Storage::disk('local')->put('uploads/backup-test.txt', 'project-file-body');
+        ProjectFile::query()->create([
+            'user_id' => $owner->id,
+            'project_id' => $project->id,
+            'original_name' => 'backup-test.txt',
+            'stored_name' => 'backup-test.txt',
+            'disk' => 'local',
+            'path' => 'uploads/backup-test.txt',
+            'mime_type' => 'text/plain',
+            'size' => 17,
+        ]);
+
+        Storage::disk('public')->put('company-logos/backup-logo.png', 'logo-body');
+        Company::query()->create([
+            'user_id' => $owner->id,
+            'name' => 'Backup Test Studio',
+            'logo_disk' => 'public',
+            'logo_path' => 'company-logos/backup-logo.png',
+        ]);
+
+        Artisan::call('ops:backup');
+
+        $files = Storage::disk('local')->allFiles('backups');
+        $this->assertNotEmpty($files);
+
+        $payload = json_decode(Crypt::decryptString(Storage::disk('local')->get($files[0])), true);
+
+        $this->assertCount(2, $payload['files']);
+        $this->assertTrue(collect($payload['files'])->contains(fn (array $file) => ($file['type'] ?? null) === 'project_file'));
+        $this->assertTrue(collect($payload['files'])->contains(fn (array $file) => ($file['type'] ?? null) === 'company_logo'));
     }
 
     public function test_backup_prune_removes_expired_snapshots(): void
