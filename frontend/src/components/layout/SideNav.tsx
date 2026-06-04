@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth/AuthProvider";
 import BrandLogo from "@/components/brand/BrandLogo";
+import { APP_VERSION_LABEL } from "@/lib/app-version";
 
 export default function SideNav() {
   const pathname = usePathname();
@@ -79,6 +80,9 @@ export default function SideNav() {
           <LogOut className="h-4 w-4" />
           Sign out
         </button>
+        <p className="mt-4 px-2 text-[11px] uppercase tracking-[0.22em] text-muted-foreground/70">
+          BuildLedger {APP_VERSION_LABEL}
+        </p>
       </div>
     </div>
   );
