@@ -41,6 +41,34 @@ class RowLevelSecurity
         }
     }
 
+    /**
+     * @template T
+     *
+     * @param  array<string, string>  $context
+     * @param  callable(): T  $callback
+     * @return T
+     */
+    public static function runWithContext(array $context, callable $callback): mixed
+    {
+        if (! self::supported()) {
+            return $callback();
+        }
+
+        $previousContext = [];
+
+        foreach (array_keys($context) as $key) {
+            $previousContext[$key] = self::currentSetting($key);
+        }
+
+        try {
+            self::setContext($context);
+
+            return $callback();
+        } finally {
+            self::setContext($previousContext);
+        }
+    }
+
     public static function userPolicy(string $userColumn = 'user_id'): string
     {
         return sprintf(
@@ -91,5 +119,12 @@ class RowLevelSecurity
     private static function quoteIdentifier(string $identifier): string
     {
         return '"' . str_replace('"', '""', $identifier) . '"';
+    }
+
+    private static function currentSetting(string $key): string
+    {
+        $result = DB::selectOne('select current_setting(?, true) as value', [(string) $key]);
+
+        return (string) ($result->value ?? '');
     }
 }
