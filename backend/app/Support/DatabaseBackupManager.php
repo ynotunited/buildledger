@@ -118,9 +118,6 @@ class DatabaseBackupManager
         ];
     }
 
-    /**
-     * @return array<int, array<string, mixed>>
-     */
     private function collectFileSnapshots(): array
     {
         $snapshots = [];
@@ -234,7 +231,6 @@ class DatabaseBackupManager
         ];
     }
 
-    /**
      * Remove backup snapshots older than the configured retention window.
      *
      * @return array<int, string>
