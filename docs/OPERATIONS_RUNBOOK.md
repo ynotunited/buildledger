@@ -43,6 +43,11 @@ These environment flags control incident response and production readiness:
 - `OPS_ALERTS_ENABLED`
 - `OPS_RECONCILIATION_ENABLED`
 
+## Secrets
+
+- See [Secret Rotation Policy](SECRET_ROTATION_POLICY.md) for the rotation rules and the incident checklist.
+- Keep production secrets out of Git, out of screenshots, and out of chat.
+
 ## Recommended Schedule
 
 - Health scan: hourly
