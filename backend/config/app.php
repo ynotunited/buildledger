@@ -8,12 +8,14 @@ return [
     |--------------------------------------------------------------------------
     |
     | This value is the name of your application, which will be used when the
-    | framework needs to place the application's name in a notification or
+    | framework needs to place the application's name in notification or
     | other UI elements where an application name needs to be displayed.
     |
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+
+    'version' => env('APP_VERSION', '1.0.0'),
 
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
 
@@ -62,8 +64,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | Here you may specify the default timezone for your application, which
-    | will be used by the PHP date and date-time functions. The timezone
-    | is set to "UTC" by default as it is suitable for most use cases.
+    | will be used by the PHP date and date-time functions. The timezone is
+    | set to "UTC" by default as it is suitable for most use cases.
     |
     */
 
@@ -117,7 +119,6 @@ return [
     | allow maintenance mode to be controlled across multiple machines.
     |
     | Supported drivers: "file", "cache"
-    |
     */
 
     'maintenance' => [
