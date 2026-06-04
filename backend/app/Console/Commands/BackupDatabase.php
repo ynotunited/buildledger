@@ -51,6 +51,10 @@ class BackupDatabase extends Command
                 $result['record_count']
             ));
 
+            if (($result['pruned_count'] ?? 0) > 0) {
+                $this->line(sprintf('Pruned %d expired backup(s).', $result['pruned_count']));
+            }
+
             return self::SUCCESS;
         } catch (Throwable $exception) {
             $events->record([

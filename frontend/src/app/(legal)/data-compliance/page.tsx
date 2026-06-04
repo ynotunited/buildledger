@@ -39,7 +39,15 @@ export default function DataCompliancePage() {
           <p>All responses include security headers: <code>X-Content-Type-Options</code>, <code>X-Frame-Options</code>, <code>X-XSS-Protection</code>, <code>Referrer-Policy</code>, <code>Permissions-Policy</code>, and <code>Strict-Transport-Security</code> (HSTS) on HTTPS connections.</p>
         </SubSection>
         <SubSection title="2.4 Infrastructure">
-          <p>BuildLedger is hosted on dedicated VPS infrastructure. File uploads are stored on isolated storage with access-controlled signed URLs. Database backups are performed regularly and stored encrypted.</p>
+          <p>BuildLedger is hosted on dedicated VPS infrastructure. File uploads are stored on isolated storage with access-controlled signed URLs. Database backups are performed regularly, encrypted before storage, and retained on a rolling schedule.</p>
+        </SubSection>
+        <SubSection title="2.5 Backup Policy">
+          <ul>
+            <li>Database snapshots are created daily during off-peak hours.</li>
+            <li>Snapshots are encrypted before they are written to the backup disk.</li>
+            <li>Expired backups are pruned automatically after the retention window, which is 30 days by default.</li>
+            <li>Backups are intended for recovery, audit, and continuity purposes only and are not used for day-to-day access.</li>
+          </ul>
         </SubSection>
       </Section>
 

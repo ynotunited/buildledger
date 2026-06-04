@@ -2,6 +2,8 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -13,8 +15,9 @@ class DatabaseBackupManager
     {
         $disk = (string) config('ops.backup_disk', 'local');
         $prefix = trim((string) config('ops.backup_prefix', 'backups'), '/');
+        $retentionDays = max(1, (int) config('ops.backup_retention_days', 30));
         $timestamp = now()->format('Ymd_His');
-        $fileName = ($prefix !== '' ? "{$prefix}/" : '') . "buildledger-db-{$timestamp}.json";
+        $fileName = ($prefix !== '' ? "{$prefix}/" : '') . "buildledger-db-{$timestamp}.json.enc";
 
         $tables = [];
         foreach ($this->listTables() as $table) {
@@ -36,24 +39,37 @@ class DatabaseBackupManager
             throw new RuntimeException('Unable to serialize database backup.');
         }
 
-        Storage::disk($disk)->put($fileName, $json);
+        $encrypted = Crypt::encryptString($json);
+        Storage::disk($disk)->put($fileName, $encrypted);
 
         $checksum = hash('sha256', $json);
+        $prunedPaths = $this->prune($retentionDays);
 
         return [
             'disk' => $disk,
             'path' => $fileName,
             'checksum' => $checksum,
+            'encrypted' => true,
+            'retention_days' => $retentionDays,
             'bytes' => strlen($json),
             'table_count' => count($tables),
             'record_count' => collect($tables)->sum(fn (array $rows) => count($rows)),
+            'pruned_count' => count($prunedPaths),
         ];
     }
 
     public function restore(string $path): array
     {
         $disk = (string) config('ops.backup_disk', 'local');
-        $payload = json_decode((string) Storage::disk($disk)->get($path), true);
+        $contents = (string) Storage::disk($disk)->get($path);
+
+        try {
+            $json = Crypt::decryptString($contents);
+        } catch (\Throwable) {
+            $json = $contents;
+        }
+
+        $payload = json_decode($json, true);
 
         if (! is_array($payload) || ! isset($payload['tables']) || ! is_array($payload['tables'])) {
             throw new RuntimeException('Invalid backup payload.');
@@ -86,6 +102,46 @@ class DatabaseBackupManager
             'table_count' => count($tables),
             'record_count' => collect($payload['tables'])->sum(fn (array $rows) => count($rows)),
         ];
+    }
+
+    /**
+     * Remove backup snapshots older than the configured retention window.
+     *
+     * @return array<int, string>
+     */
+    public function prune(int $retentionDays): array
+    {
+        if ($retentionDays < 1) {
+            return [];
+        }
+
+        $disk = (string) config('ops.backup_disk', 'local');
+        $prefix = trim((string) config('ops.backup_prefix', 'backups'), '/');
+        $cutoff = now()->subDays($retentionDays);
+        $paths = $prefix !== ''
+            ? Storage::disk($disk)->allFiles($prefix)
+            : Storage::disk($disk)->allFiles();
+
+        $deleted = [];
+
+        foreach ($paths as $path) {
+            if (! preg_match('/buildledger-db-(\d{8}_\d{6})\.json(?:\.enc)?$/', $path, $matches)) {
+                continue;
+            }
+
+            try {
+                $createdAt = Carbon::createFromFormat('Ymd_His', $matches[1]);
+            } catch (\Throwable) {
+                continue;
+            }
+
+            if ($createdAt->lessThan($cutoff)) {
+                Storage::disk($disk)->delete($path);
+                $deleted[] = $path;
+            }
+        }
+
+        return $deleted;
     }
 
     /**
