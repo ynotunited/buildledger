@@ -165,6 +165,12 @@ class AuthTest extends TestCase
             ->assertJsonMissingPath('email_verification_sent_at');
     }
 
+    public function test_unauthenticated_user_endpoint_returns_401(): void
+    {
+        $this->getJson('/api/user')
+            ->assertStatus(401);
+    }
+
     public function test_google_callback_blocks_unapproved_email_when_invite_only(): void
     {
         config(['security.invite_only' => true]);
