@@ -10,6 +10,10 @@ const PUBLIC_PATHS = new Set([
   "/reset-password",
   "/verify-email",
   "/auth/callback",
+  "/privacy-policy",
+  "/terms-of-use",
+  "/data-compliance",
+  "/ip-infringement",
 ]);
 
 function isPublicPath(pathname: string) {
