@@ -789,7 +789,7 @@ export default function AdminPage() {
           </Card>
         </div>
 
-        <div className="grid items-start gap-4 lg:grid-cols-3">
+        <div className="grid items-start gap-4 lg:grid-cols-4">
           <Card className="self-start">
             <CardHeader>
               <CardTitle>Recent Support Sessions</CardTitle>
