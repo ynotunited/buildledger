@@ -3,6 +3,7 @@
 import * as Sentry from "@sentry/nextjs";
 import posthog from "posthog-js";
 import type { AuthUser } from "./auth";
+import { ensureCsrfCookie } from "./csrf";
 
 const SESSION_KEY = "buildledger_session_id";
 let posthogInitialized = false;
@@ -111,6 +112,7 @@ export async function trackEvent(eventName: string, properties: Record<string, u
   }
 
   ensurePosthogInitialized();
+  await ensureCsrfCookie();
 
   const payload = {
     event_name: eventName,
@@ -159,6 +161,8 @@ export async function captureFrontendError(payload: {
   if (typeof window === "undefined") {
     return;
   }
+
+  await ensureCsrfCookie();
 
   try {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/telemetry/frontend-errors`, {

@@ -83,7 +83,10 @@ class AdminController extends Controller
             'open_issues' => Issue::query()->whereIn('status', ['open', 'in_progress'])->count(),
             'issues_7d' => Issue::query()->where('created_at', '>=', $last7Days)->count(),
             'security_incidents_7d' => SecurityIncident::query()->where('occurred_at', '>=', $last7Days)->count(),
-            'errors_7d' => ApplicationError::query()->where('occurred_at', '>=', $last7Days)->count(),
+            'errors_7d' => ApplicationError::query()
+                ->where('level', 'error')
+                ->where('occurred_at', '>=', $last7Days)
+                ->count(),
             'analytics_events_30d' => AnalyticsEvent::query()->where('occurred_at', '>=', $last30Days)->count(),
             'completed_payments_30d' => PaymentLedgerEntry::query()
                 ->where('event_type', 'captured')
@@ -158,6 +161,7 @@ class AdminController extends Controller
             ]);
 
         $recentErrors = ApplicationError::query()
+            ->where('level', 'error')
             ->latest('id')
             ->limit(5)
             ->get()

@@ -162,7 +162,9 @@ class DeploymentHealthChecker
         }
 
         if (! config('security.api_gateway_enforced')) {
-            return $this->warn('API gateway enforcement is disabled.');
+            return $this->pass('API gateway enforcement is not enabled in this deployment.', [
+                'enabled' => false,
+            ]);
         }
 
         $sharedSecret = (string) config('security.api_gateway_shared_secret');
@@ -207,7 +209,8 @@ class DeploymentHealthChecker
 
     private function checkLogs(): array
     {
-        $stack = collect(explode(',', (string) env('LOG_STACK', '')))
+        $configuredStack = config('logging.channels.stack.channels', []);
+        $stack = collect(is_array($configuredStack) ? $configuredStack : explode(',', (string) $configuredStack))
             ->map(fn (string $channel) => trim($channel))
             ->filter()
             ->values();

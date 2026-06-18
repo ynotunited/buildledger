@@ -27,6 +27,10 @@ class ApplicationErrorRecorder
 
     public static function fromException(\Throwable $exception, Request $request, int $status): void
     {
+        if ($status < 500) {
+            return;
+        }
+
         self::record([
             'user_id' => $request->user()?->id,
             'source' => 'backend',
