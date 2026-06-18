@@ -541,58 +541,60 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Plan Breakdown</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {loading ? (
-                Array.from({ length: 3 }).map((_, index) => <Skeleton key={index} className="h-20 rounded-xl" />)
-              ) : data?.plan_breakdown?.length ? (
-                data.plan_breakdown.map((plan) => (
-                  <div key={plan.code} className="rounded-xl border border-border bg-secondary/20 p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">{plan.name}</p>
-                        <p className="text-xs text-muted-foreground">{plan.code}</p>
+          <div className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Plan Breakdown</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {loading ? (
+                  Array.from({ length: 3 }).map((_, index) => <Skeleton key={index} className="h-20 rounded-xl" />)
+                ) : data?.plan_breakdown?.length ? (
+                  data.plan_breakdown.map((plan) => (
+                    <div key={plan.code} className="rounded-xl border border-border bg-secondary/20 p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">{plan.name}</p>
+                          <p className="text-xs text-muted-foreground">{plan.code}</p>
+                        </div>
+                        <span className="text-xs text-muted-foreground">{plan.active_subscriptions} active</span>
                       </div>
-                      <span className="text-xs text-muted-foreground">{plan.active_subscriptions} active</span>
+                      <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                        <span>Monthly: ₦{plan.monthly_price_ngn.toLocaleString()}</span>
+                        <span>Annual: ₦{plan.annual_price_ngn.toLocaleString()}</span>
+                        <span>Cancelled: {plan.cancelled_subscriptions}</span>
+                        <span>Expired: {plan.expired_subscriptions}</span>
+                      </div>
                     </div>
-                    <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
-                      <span>Monthly: ₦{plan.monthly_price_ngn.toLocaleString()}</span>
-                      <span>Annual: ₦{plan.annual_price_ngn.toLocaleString()}</span>
-                      <span>Cancelled: {plan.cancelled_subscriptions}</span>
-                      <span>Expired: {plan.expired_subscriptions}</span>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-sm text-muted-foreground">No active plans seeded yet.</p>
-              )}
-            </CardContent>
-          </Card>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">No active plans seeded yet.</p>
+                )}
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Launch Access</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <p className="text-sm text-muted-foreground">
-                {data?.invite_mode?.enabled
-                  ? "Invite-only mode is active. Approved waitlist leads can create accounts."
-                  : "Open registration is active. Anyone can create an account again."}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                Source: {data?.invite_mode?.source ?? "loading"} · Updated: {formatDate(data?.invite_mode?.updated_at)}
-              </p>
-              <Link
-                href="/admin/security-operations"
-                className="inline-flex items-center rounded-full border border-white/10 px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
-              >
-                Open Security Operations
-              </Link>
-            </CardContent>
-          </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Launch Access</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  {data?.invite_mode?.enabled
+                    ? "Invite-only mode is active. Approved waitlist leads can create accounts."
+                    : "Open registration is active. Anyone can create an account again."}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Source: {data?.invite_mode?.source ?? "loading"} · Updated: {formatDate(data?.invite_mode?.updated_at)}
+                </p>
+                <Link
+                  href="/admin/security-operations"
+                  className="inline-flex items-center rounded-full border border-white/10 px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+                >
+                  Open Security Operations
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         <div className="grid items-start gap-4 xl:grid-cols-6">
