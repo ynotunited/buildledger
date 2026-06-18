@@ -162,6 +162,7 @@ class AdminController extends Controller
 
         $recentErrors = ApplicationError::query()
             ->where('level', 'error')
+            ->where('occurred_at', '>=', $last7Days)
             ->latest('id')
             ->limit(5)
             ->get()

@@ -81,6 +81,15 @@ class AdminDashboardTest extends TestCase
             'occurred_at' => now(),
         ]);
 
+        ApplicationError::create([
+            'user_id' => $operator->id,
+            'source' => 'backend',
+            'level' => 'error',
+            'message' => 'Old logout issue.',
+            'path' => '/api/logout',
+            'occurred_at' => now()->subDays(9),
+        ]);
+
         PaymentLedgerEntry::create([
             'user_id' => $operator->id,
             'event_type' => 'captured',
@@ -99,9 +108,10 @@ class AdminDashboardTest extends TestCase
             'user_agent' => 'PHPUnit',
         ]);
 
-        $this->withHeader('Authorization', "Bearer {$adminToken}")
-            ->getJson('/api/admin/dashboard')
-            ->assertOk()
+        $response = $this->withHeader('Authorization', "Bearer {$adminToken}")
+            ->getJson('/api/admin/dashboard');
+
+        $response->assertOk()
             ->assertJsonPath('metrics.admin_users', 1)
             ->assertJsonPath('metrics.open_issues', 1)
             ->assertJsonPath('metrics.pending_checkouts', 1)
@@ -122,6 +132,9 @@ class AdminDashboardTest extends TestCase
                 'recent_operational_events',
                 'invite_mode',
             ]);
+
+        $response->assertJsonCount(1, 'recent_errors')
+            ->assertJsonPath('recent_errors.0.message', 'Something went wrong.');
     }
 
     public function test_non_admin_cannot_access_dashboard(): void

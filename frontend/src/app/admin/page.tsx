@@ -490,7 +490,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid items-start gap-4 md:grid-cols-2 xl:grid-cols-4">
           {METRIC_CARDS.map((card) => {
             const Icon = card.icon;
             const value = data?.metrics?.[card.key] ?? 0;
@@ -515,7 +515,7 @@ export default function AdminPage() {
           })}
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid items-start gap-4 lg:grid-cols-3">
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle>Health Checks</CardTitle>
@@ -595,8 +595,8 @@ export default function AdminPage() {
           </Card>
         </div>
 
-        <div className="grid gap-4 xl:grid-cols-4">
-          <Card>
+        <div className="grid items-start gap-4 xl:grid-cols-6">
+          <Card className="xl:col-span-2">
             <CardHeader>
               <CardTitle>Recent Users</CardTitle>
             </CardHeader>
@@ -655,7 +655,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="xl:col-span-1">
             <CardHeader>
               <CardTitle>Recent Clients</CardTitle>
             </CardHeader>
@@ -687,7 +687,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="xl:col-span-1">
             <CardHeader>
               <CardTitle>Recent Payments</CardTitle>
             </CardHeader>
@@ -720,7 +720,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="xl:col-span-2">
             <CardHeader>
               <CardTitle>Waitlist Signups</CardTitle>
             </CardHeader>
@@ -787,8 +787,8 @@ export default function AdminPage() {
           </Card>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-3">
-          <Card>
+        <div className="grid items-start gap-4 lg:grid-cols-3">
+          <Card className="self-start">
             <CardHeader>
               <CardTitle>Recent Support Sessions</CardTitle>
             </CardHeader>
@@ -820,7 +820,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="self-start">
             <CardHeader>
               <CardTitle>Recent Operations</CardTitle>
             </CardHeader>
@@ -852,7 +852,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="self-start">
             <CardHeader>
               <CardTitle>Recent Issues</CardTitle>
             </CardHeader>
@@ -884,7 +884,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="self-start">
             <CardHeader>
               <CardTitle>Security Signals</CardTitle>
             </CardHeader>
@@ -917,11 +917,11 @@ export default function AdminPage() {
           </Card>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Errors</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
+          <Card className="self-start">
+            <CardHeader>
+              <CardTitle>Recent Errors (7d)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
             {loading ? (
               Array.from({ length: 5 }).map((_, index) => <Skeleton key={index} className="h-16 rounded-xl" />)
             ) : data?.recent_errors?.length ? (
@@ -940,7 +940,7 @@ export default function AdminPage() {
                 </div>
               ))
             ) : (
-              <p className="text-sm text-muted-foreground">No captured errors yet.</p>
+              <p className="text-sm text-muted-foreground">No recent errors captured in the last 7 days.</p>
             )}
           </CardContent>
         </Card>
