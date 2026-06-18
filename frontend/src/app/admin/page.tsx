@@ -601,21 +601,25 @@ export default function AdminPage() {
               <CardTitle>Recent Users</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="rounded-xl border border-dashed border-border bg-secondary/10 p-4">
-                <label htmlFor="support-note" className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
-                  Support note (optional)
-                </label>
-                <textarea
-                  id="support-note"
-                  rows={3}
-                  className="mt-2 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary"
-                  placeholder="Why are we viewing this account?"
-                  value={supportNote}
-                  onChange={(e) => setSupportNote(e.target.value)}
-                />
-                <p className="mt-2 text-xs text-muted-foreground">
-                  This note is saved to the support audit trail when you start an impersonation session.
-                </p>
+              <div className="rounded-xl border border-border bg-secondary/10 p-3">
+                <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                  <div className="md:max-w-[10rem]">
+                    <label htmlFor="support-note" className="text-[11px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
+                      Support note
+                    </label>
+                    <p className="mt-2 text-xs leading-6 text-muted-foreground">
+                      Optional note saved to the support audit trail before impersonation.
+                    </p>
+                  </div>
+                  <textarea
+                    id="support-note"
+                    rows={2}
+                    className="min-h-[92px] w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary"
+                    placeholder="Why are we viewing this account?"
+                    value={supportNote}
+                    onChange={(e) => setSupportNote(e.target.value)}
+                  />
+                </div>
               </div>
               {loading ? (
                 Array.from({ length: 5 }).map((_, index) => <Skeleton key={index} className="h-16 rounded-xl" />)

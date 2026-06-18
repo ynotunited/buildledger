@@ -109,6 +109,16 @@ class AuthTest extends TestCase
              ->assertJson(['message' => 'Logged out successfully']);
     }
 
+    public function test_user_can_logout_from_session_auth_without_personal_token_delete(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user, 'web')
+            ->postJson('/api/logout')
+            ->assertStatus(200)
+            ->assertJson(['message' => 'Logged out successfully']);
+    }
+
     public function test_register_requires_unique_email(): void
     {
         User::factory()->create(['email' => 'taken@example.com']);

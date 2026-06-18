@@ -9,6 +9,7 @@ use App\Support\SubscriptionBillingManager;
 use App\Notifications\VerifyEmailAddress;
 use App\Http\Controllers\Controller;
 use App\Support\InputSanitizer;
+use Laravel\Sanctum\TransientToken;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
@@ -89,8 +90,9 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
-        if ($request->user()?->currentAccessToken()) {
-            $request->user()->currentAccessToken()->delete();
+        $currentToken = $request->user()?->currentAccessToken();
+        if ($currentToken && ! $currentToken instanceof TransientToken && method_exists($currentToken, 'delete')) {
+            $currentToken->delete();
         }
 
         Auth::guard('web')->logout();
