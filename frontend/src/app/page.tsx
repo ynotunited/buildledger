@@ -1,345 +1,430 @@
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, Briefcase, CreditCard, FileText, Sparkles, Users } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BadgeCheck,
+  CircleAlert,
+  Clock3,
+  CreditCard,
+  FileText,
+  LoaderCircle,
+  RefreshCw,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
+import BrandLogo from "@/components/brand/BrandLogo";
 import InviteOnlyBanner from "@/components/marketing/InviteOnlyBanner";
 import WaitlistSignupForm from "@/components/marketing/WaitlistSignupForm";
-import BrandLogo from "@/components/brand/BrandLogo";
 import { APP_VERSION_LABEL } from "@/lib/app-version";
 
-const FEATURES = [
-  {
-    title: "Clients",
-    description: "Keep a live picture of who owes you money, what they approved, and what needs follow-up.",
-    icon: Users,
-  },
-  {
-    title: "Proposals",
-    description: "Turn scope and pricing into polished approvals clients can say yes to without the usual back-and-forth.",
-    icon: FileText,
-  },
-  {
-    title: "Projects",
-    description: "Track delivery, deadlines, and bottlenecks without losing sight of the money attached to the work.",
-    icon: Briefcase,
-  },
-  {
-    title: "Payments",
-    description: "See paid, pending, and overdue money from one dashboard instead of chasing it across tabs.",
-    icon: CreditCard,
-  },
-];
+const heroChips = ["Invoices", "Reconciliation", "Ledger entries", "Payment follow-up"] as const;
 
-const WORKFLOW_STEPS = [
+const workflowCards = [
   {
-    step: "01",
-    title: "Proposal",
-    description: "Turn scope into a clean approval step clients can sign off on faster.",
+    title: "Create invoice",
+    description: "Draft client invoices with line items, due dates, and the context you need to send them cleanly.",
+    icon: FileText,
+    accent: "emerald",
   },
   {
-    step: "02",
-    title: "Contract",
-    description: "Lock expectations before work starts so clients and teams stay aligned.",
+    title: "Reconcile transaction",
+    description: "Match incoming transfers to the right invoice and spot anything that needs a manual check.",
+    icon: CreditCard,
+    accent: "sky",
   },
   {
-    step: "03",
-    title: "Invoice",
-    description: "Send polished invoices and payment links with fewer follow-up messages.",
-  },
-  {
-    step: "04",
-    title: "Payment",
-    description: "Know what cleared, what is pending, and what still needs a nudge.",
+    title: "View ledger entry",
+    description: "Inspect the entry, balance impact, and audit trail without jumping through several screens.",
+    icon: BadgeCheck,
+    accent: "slate",
   },
 ] as const;
 
-const PRICING = [
+const stateCards = [
+  {
+    title: "Bank feed loading",
+    eyebrow: "Bank feed still syncing",
+    body: "Skeleton rows keep the page readable while imported transactions resolve.",
+    action: "Waiting on imported transactions",
+    icon: LoaderCircle,
+    tone: "emerald",
+  },
+  {
+    title: "Empty queue",
+    eyebrow: "No uncategorized items",
+    body: "When there are no open matches, the page still points to the next finance action instead of going blank.",
+    action: "Create invoice or import payments",
+    icon: ShieldCheck,
+    tone: "slate",
+  },
+  {
+    title: "Partial failure",
+    eyebrow: "One transfer needs review",
+    body: "A missing counterparty name should be explained inline, not hidden behind a generic error.",
+    action: "Review the mismatch and retry",
+    icon: CircleAlert,
+    tone: "amber",
+  },
+] as const;
+
+const pricingPlans = [
   {
     name: "Starter",
     price: "₦10,000",
     period: "per month",
-    annualPrice: "₦96,000",
-    annualPeriod: "per year",
-    eyebrow: "For independents",
-    description: "A polished workspace for independent operators who want proposals, contracts, invoices, and follow-ups in one place.",
-    highlights: ["A single operating layer for client work", "Faster approvals and payment follow-up", "A clearer path from proposal to cash"],
-    note: "Save ₦24,000 annually with yearly billing.",
-    cta: "Request access",
-    href: "#waitlist",
+    description: "For independent operators who need clean invoices and a reliable cash view.",
+    features: ["Create invoices faster", "Track paid and overdue balances", "Keep client work and money together"],
     featured: false,
   },
   {
     name: "Growth",
     price: "₦25,000",
     period: "per month",
-    annualPrice: "₦240,000",
-    annualPeriod: "per year",
-    eyebrow: "For growing teams",
-    description: "Built for teams that want visibility into profitability, delivery, and revenue without slowing the work down.",
-    highlights: ["See who owes you money and which projects actually pay", "Analytics and operational reporting", "Priority support and governance"],
-    note: "Save ₦60,000 annually with yearly billing.",
-    cta: "Request access",
-    href: "#waitlist",
+    description: "For small teams that want one operating layer across finance and delivery.",
+    features: ["Review ledger impact as work moves", "Reconcile transfers with less manual checking", "See issues before they turn into gaps"],
     featured: true,
   },
   {
     name: "Agency",
     price: "₦50,000",
     period: "per month",
-    annualPrice: "₦480,000",
-    annualPeriod: "per year",
-    eyebrow: "For established studios",
-    description: "Designed for larger teams that need tighter oversight, heavier client volume, and a more hands-on rollout.",
-    highlights: ["Built for heavier client loads", "Sharper visibility across accounts and teams", "Concierge-style onboarding and support"],
-    note: "Save ₦120,000 annually with yearly billing.",
-    cta: "Request access",
-    href: "#waitlist",
+    description: "For heavier client volume, more approvals, and more oversight.",
+    features: ["Sharper oversight across accounts", "Rollouts with hands-on support", "Reporting that stays readable under load"],
     featured: false,
   },
 ] as const;
 
+function SectionTitle({
+  eyebrow,
+  title,
+  description,
+  align = "left",
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  align?: "left" | "center";
+}) {
+  return (
+    <div className={align === "center" ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
+      <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-900">
+        <Sparkles className="h-3.5 w-3.5" />
+        {eyebrow}
+      </div>
+      <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance text-slate-950 sm:text-4xl">
+        {title}
+      </h2>
+      <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
+        {description}
+      </p>
+    </div>
+  );
+}
+
 export default function Home() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.16),_transparent_32%),linear-gradient(180deg,_rgba(24,24,27,0.98),_rgba(9,9,11,1))] text-white">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="landing-pan absolute -top-20 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-emerald-400/18 blur-3xl" />
-        <div className="landing-orbit absolute left-[12%] top-40 h-28 w-28 rounded-full bg-cyan-400/10 blur-2xl" />
-        <div className="landing-float absolute bottom-28 right-[10%] h-48 w-48 rounded-full bg-emerald-300/10 blur-3xl" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300/40 to-transparent" />
-      </div>
+    <main className="relative min-h-screen overflow-x-clip bg-white text-slate-950">
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem] bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.18),_transparent_42%),radial-gradient(circle_at_72%_24%,_rgba(56,189,248,0.12),_transparent_28%),linear-gradient(180deg,_rgba(240,253,244,0.95),_rgba(255,255,255,0.85)_58%,_rgba(255,255,255,0))]" />
 
-      <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-6 py-8">
-        <header className="landing-fade-up flex items-center justify-between gap-4" style={{ animationDelay: "0.05s" }}>
-          <div className="landing-float min-w-0 shrink" style={{ animationDuration: "7s" }}>
-            <BrandLogo href="/" variant="white" className="h-8 w-auto" priority />
-            <p className="mt-1 text-xs text-zinc-400 sm:text-sm">From proposal to payment.</p>
-          </div>
-          <div className="flex shrink-0 items-center gap-2">
-            <Link
-              href="/login"
-              className="rounded-full border border-white/10 px-3 py-1.5 text-xs font-medium text-zinc-200 transition-colors hover:border-white/20 hover:bg-white/5 sm:px-4 sm:py-2 sm:text-sm"
-            >
-              Sign in
-            </Link>
-            <Link
-              href="#waitlist"
-              className="rounded-full bg-emerald-400 px-3 py-1.5 text-xs font-medium text-zinc-950 transition-transform hover:-translate-y-0.5 sm:px-4 sm:py-2 sm:text-sm"
-            >
-              <span className="sm:hidden">Request access</span>
-              <span className="hidden sm:inline">Request access</span>
-            </Link>
+      <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 pb-8 pt-5 sm:px-6 lg:px-8">
+        <header className="rounded-full border border-slate-200 bg-white/95 px-4 py-3 shadow-[0_10px_30px_rgba(15,23,42,0.05)] backdrop-blur">
+          <div className="flex items-center justify-between gap-4">
+            <BrandLogo href="/" variant="color" className="h-8 w-auto" priority />
+
+            <nav className="hidden items-center gap-8 text-sm text-slate-600 md:flex">
+              <a href="#workflow" className="transition-colors hover:text-slate-950">
+                Workflow
+              </a>
+              <a href="#states" className="transition-colors hover:text-slate-950">
+                States
+              </a>
+              <a href="#pricing" className="transition-colors hover:text-slate-950">
+                Pricing
+              </a>
+              <a href="#waitlist" className="transition-colors hover:text-slate-950">
+                Access
+              </a>
+            </nav>
+
+            <div className="flex items-center gap-2">
+              <Link
+                href="/login"
+                className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="#waitlist"
+                className="rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white transition-transform hover:-translate-y-0.5"
+              >
+                Request access
+              </Link>
+            </div>
           </div>
         </header>
+
         <InviteOnlyBanner />
 
-        <section className="flex flex-1 items-center py-16 pb-0">
-          <div className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <section className="py-14 sm:py-20">
+          <div className="grid gap-10 lg:grid-cols-[1.03fr_0.97fr] lg:items-center">
             <div>
-              <div className="landing-fade-up inline-flex items-center rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200" style={{ animationDelay: "0.12s" }}>
-                Built for agencies, studios, and independent operators
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-900">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                Built for live financial workflows
               </div>
-              <h1 className="landing-fade-up mt-6 max-w-3xl text-5xl font-semibold tracking-tight text-balance sm:text-6xl" style={{ animationDelay: "0.18s" }}>
-                Run client operations from one calm, premium workspace.
+
+              <h1 className="mt-6 max-w-3xl text-5xl font-semibold tracking-tight text-balance text-slate-950 sm:text-6xl lg:text-[4.8rem] lg:leading-[0.95]">
+                Keep invoices, reconciliations, and ledger entries in one clean workspace.
               </h1>
-              <p className="landing-fade-up mt-6 max-w-2xl text-lg leading-8 text-zinc-300" style={{ animationDelay: "0.26s" }}>
-                BuildLedger keeps your proposals, contracts, invoices, projects, and payments in one connected flow so your team always knows what is next.
+
+              <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                BuildLedger keeps the money side of client work readable. Create an invoice, match a transfer, and inspect the ledger impact without moving through a cluttered stack of screens.
               </p>
-              <div className="landing-fade-up mt-8 flex flex-col gap-3 sm:flex-row" style={{ animationDelay: "0.34s" }}>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
-                  href="#waitlist"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-medium text-zinc-950 transition-transform hover:-translate-y-0.5"
+                  href="/invoices/create"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-medium text-white transition-transform hover:-translate-y-0.5 hover:bg-emerald-500"
                 >
-                  Request access
+                  Create invoice
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
-                  href="#pricing"
-                  className="inline-flex items-center justify-center rounded-2xl border border-white/10 px-5 py-3 text-sm font-medium text-white transition-colors hover:border-white/20 hover:bg-white/5"
+                  href="/payments/record"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-900 transition-colors hover:border-slate-300 hover:bg-slate-50"
                 >
-                  View pricing
+                  Reconcile transaction
+                  <ArrowUpRight className="h-4 w-4" />
                 </Link>
+                <a
+                  href="#states"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-950"
+                >
+                  Review states
+                  <Clock3 className="h-4 w-4" />
+                </a>
               </div>
 
-              <div className="landing-fade-up mt-10 grid max-w-2xl grid-cols-3 gap-4" style={{ animationDelay: "0.42s" }}>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-                  <p className="text-2xl font-semibold">₦4.8M</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.18em] text-zinc-400">Revenue tracked</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-                  <p className="text-2xl font-semibold">32</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.18em] text-zinc-400">Active clients</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-                  <p className="text-2xl font-semibold">9d</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.18em] text-zinc-400">Avg. close time</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="landing-fade-up relative rounded-[2rem] border border-white/10 bg-white/5 p-5 shadow-2xl shadow-black/30 backdrop-blur" style={{ animationDelay: "0.24s" }}>
-              <div className="mb-4 flex items-center justify-between rounded-[1.5rem] border border-white/8 bg-black/20 px-4 py-3">
-                <div>
-                  <p className="text-sm font-medium text-zinc-200">Live business pulse</p>
-                  <p className="text-xs text-zinc-500">Today&apos;s workflow across the stack</p>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,0.8)]" />
-                  <span className="text-xs uppercase tracking-[0.16em] text-emerald-200">Live</span>
-                </div>
-              </div>
-
-              <div className="mb-4 grid grid-cols-3 gap-3">
-                <div className="landing-float rounded-2xl border border-white/8 bg-white/6 p-3" style={{ animationDuration: "5.5s" }}>
-                  <p className="text-xs uppercase tracking-[0.16em] text-zinc-500">Invoices</p>
-                  <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/8">
-                    <div className="landing-pulse h-full w-[78%] rounded-full bg-emerald-300" />
-                  </div>
-                </div>
-                <div className="landing-float rounded-2xl border border-white/8 bg-white/6 p-3" style={{ animationDuration: "6.4s", animationDelay: "0.6s" }}>
-                  <p className="text-xs uppercase tracking-[0.16em] text-zinc-500">Projects</p>
-                  <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/8">
-                    <div className="landing-pulse h-full w-[66%] rounded-full bg-cyan-300" style={{ animationDelay: "0.4s" }} />
-                  </div>
-                </div>
-                <div className="landing-float rounded-2xl border border-white/8 bg-white/6 p-3" style={{ animationDuration: "5.9s", animationDelay: "1s" }}>
-                  <p className="text-xs uppercase tracking-[0.16em] text-zinc-500">Payments</p>
-                  <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/8">
-                    <div className="landing-pulse h-full w-[84%] rounded-full bg-white" style={{ animationDelay: "0.7s" }} />
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                {FEATURES.map((feature) => {
-                  const Icon = feature.icon;
-                  return (
-                    <div
-                      key={feature.title}
-                      className="landing-fade-up rounded-3xl border border-white/8 bg-black/20 p-5 transition-transform duration-300 hover:-translate-y-1"
-                      style={{ animationDelay: `${0.4 + FEATURES.indexOf(feature) * 0.08}s` }}
-                    >
-                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400/12 text-emerald-300">
-                        <Icon className="h-5 w-5" />
-                      </div>
-                      <h2 className="mt-4 text-lg font-medium">{feature.title}</h2>
-                      <p className="mt-2 text-sm leading-6 text-zinc-400">{feature.description}</p>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="landing-fade-up mt-10 rounded-[2.25rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur" style={{ animationDelay: "0.44s" }}>
-          <div className="flex flex-col gap-4 border-b border-white/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">
-                <Sparkles className="h-3.5 w-3.5" />
-                Workflow proof
-              </div>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                From proposal to payment, the flow stays visible.
-              </h2>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">
-                BuildLedger is designed to reduce client chaos, not just collect feature checkboxes. One client project can fund a full year of BuildLedger.
-              </p>
-            </div>
-            <div className="rounded-3xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100">
-              One client project can fund a full year of BuildLedger.
-            </div>
-          </div>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {WORKFLOW_STEPS.map((step) => (
-              <article key={step.step} className="rounded-[1.75rem] border border-white/10 bg-black/20 p-5">
-                <div className="flex items-center justify-between">
-                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold tracking-[0.22em] text-zinc-200">
-                    {step.step}
+              <div className="mt-8 flex flex-wrap gap-2">
+                {heroChips.map((chip) => (
+                  <span
+                    key={chip}
+                    className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 shadow-sm"
+                  >
+                    {chip}
                   </span>
-                  <ArrowRight className="h-4 w-4 text-zinc-500" />
+                ))}
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="rounded-[2.5rem] border border-emerald-200 bg-[linear-gradient(180deg,rgba(16,185,129,0.14),rgba(255,255,255,0.92)_50%,rgba(255,255,255,1))] p-5 shadow-[0_22px_70px_rgba(15,23,42,0.08)]">
+                <div className="rounded-[2rem] border border-white bg-white/95 p-5 shadow-[0_12px_35px_rgba(15,23,42,0.06)]">
+                  <div className="flex items-start justify-between gap-4 border-b border-slate-200 pb-4">
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Live ledger snapshot</p>
+                      <h2 className="mt-2 text-xl font-semibold text-slate-950">Today&apos;s workflow pulse</h2>
+                    </div>
+                    <div className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-900">
+                      Online
+                    </div>
+                  </div>
+
+                  <div className="mt-5 grid gap-4">
+                    <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Revenue tracked</p>
+                          <p className="mt-2 text-3xl font-semibold tabular-nums text-slate-950">₦12.4M</p>
+                        </div>
+                        <div className="rounded-2xl bg-emerald-600/10 px-3 py-2 text-sm font-medium text-emerald-700">
+                          + 7.2% this month
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-3 sm:grid-cols-3">
+                      <div className="rounded-[1.4rem] border border-slate-200 bg-white p-4">
+                        <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Invoices</p>
+                        <p className="mt-2 text-2xl font-semibold tabular-nums text-slate-950">24</p>
+                        <p className="mt-2 text-sm leading-6 text-slate-600">Awaiting payment</p>
+                      </div>
+                      <div className="rounded-[1.4rem] border border-slate-200 bg-white p-4">
+                        <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Reconciliations</p>
+                        <p className="mt-2 text-2xl font-semibold tabular-nums text-slate-950">11</p>
+                        <p className="mt-2 text-sm leading-6 text-slate-600">Imported today</p>
+                      </div>
+                      <div className="rounded-[1.4rem] border border-slate-200 bg-white p-4">
+                        <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Ledger entries</p>
+                        <p className="mt-2 text-2xl font-semibold tabular-nums text-slate-950">9</p>
+                        <p className="mt-2 text-sm leading-6 text-slate-600">Matched cleanly</p>
+                      </div>
+                    </div>
+
+                    <div className="rounded-[1.5rem] border border-slate-200 bg-white p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Queue status</p>
+                          <p className="mt-1 text-sm font-medium text-slate-950">Three entries still need a final review</p>
+                        </div>
+                        <button
+                          type="button"
+                          className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100"
+                        >
+                          Retry import
+                          <RefreshCw className="h-4 w-4" />
+                        </button>
+                      </div>
+                      <div className="mt-4 grid gap-2">
+                        <div className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
+                          INV-0142 · Madu &amp; Co · due tomorrow
+                        </div>
+                        <div className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
+                          INV-0143 · Naira Thread · awaiting approval
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="mt-6 text-xl font-semibold">{step.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-zinc-400">{step.description}</p>
-              </article>
-            ))}
+              </div>
+            </div>
           </div>
         </section>
 
-        <section id="pricing" className="landing-fade-up mt-10 rounded-[2.25rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur" style={{ animationDelay: "0.46s" }}>
-          <div className="flex flex-col gap-4 border-b border-white/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">
-                <Sparkles className="h-3.5 w-3.5" />
-                Pricing built around outcomes
-              </div>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                Approved invites still unlock a 30-day trial. After that, the ladder starts at Starter and scales to Agency.
-              </h2>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">
-                BuildLedger opens by invitation so we can onboard teams in batches. Once approved, you get a trial first, then choose the tier that fits the pace and complexity of your client work.
-              </p>
-              <div className="mt-5 rounded-3xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-zinc-200">
-                One client project can fund a full year of BuildLedger.
-              </div>
-            </div>
+        <section id="workflow" className="border-t border-slate-200 py-16 sm:py-20">
+          <SectionTitle
+            eyebrow="Workflow"
+            title="The page shows the real handoffs people use inside BuildLedger."
+            description="This stays clean, but it still feels like a live product: the actions are financial, the states are realistic, and the visual language matches the rest of the app."
+          />
+
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            {workflowCards.map((card) => {
+              const Icon = card.icon;
+
+              return (
+                <article key={card.title} className="rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="mt-4 text-xl font-semibold text-slate-950">{card.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{card.description}</p>
+                  <div className="mt-5 border-t border-slate-200 pt-4 text-sm text-slate-500">
+                    Clean spacing. No nested dashboard blocks.
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <section id="states" className="border-t border-slate-200 py-16 sm:py-20">
+          <SectionTitle
+            eyebrow="Product states"
+            align="center"
+            title="This section shows what BuildLedger does when records are loading, missing, or partially incomplete."
+            description="It is not decorative empty space. It shows the product's behavior when a bank sync is still in progress, a queue is empty, or one transaction needs a manual review."
+          />
+
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            {stateCards.map((card) => {
+              const Icon = card.icon;
+              const toneClasses = {
+                emerald: "border-emerald-200 bg-emerald-50 text-emerald-900",
+                amber: "border-amber-200 bg-amber-50 text-amber-950",
+                slate: "border-slate-200 bg-slate-50 text-slate-900",
+              }[card.tone];
+
+              return (
+                <article key={card.title} className="rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.18em] text-slate-500">{card.eyebrow}</p>
+                      <h3 className="mt-2 text-xl font-semibold text-slate-950">{card.title}</h3>
+                    </div>
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-2xl border ${toneClasses}`}>
+                      <Icon className={`h-4 w-4 ${card.tone === "amber" ? "text-amber-700" : card.tone === "emerald" ? "text-emerald-700" : "text-slate-700"}`} />
+                    </div>
+                  </div>
+                  <p className="mt-4 text-sm leading-6 text-slate-600">{card.body}</p>
+
+                  <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+                    {card.action}
+                  </div>
+
+                  {card.title === "Bank feed loading" ? (
+                    <div className="mt-5 space-y-2 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                      <div className="h-3 w-3/4 rounded-full bg-slate-200" />
+                      <div className="h-3 w-5/6 rounded-full bg-slate-200" />
+                      <div className="h-3 w-2/3 rounded-full bg-slate-200" />
+                    </div>
+                  ) : null}
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <section id="pricing" className="border-t border-slate-200 py-16 sm:py-20">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <SectionTitle
+              eyebrow="Pricing"
+              title="Invite-only access starts with a trial, then moves into the right plan."
+              description="The rollout stays controlled, but the pricing structure still maps to how teams actually grow: solo operators, small teams, and heavier agency use."
+            />
             <Link
               href="#waitlist"
-              className="inline-flex w-fit items-center gap-2 rounded-2xl border border-white/12 bg-white/8 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-white/20 hover:bg-white/12"
+              className="inline-flex w-fit items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 transition-colors hover:bg-slate-50"
             >
               Request access
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
-          <div className="mt-6 grid gap-4 xl:grid-cols-3">
-            {PRICING.map((plan) => (
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            {pricingPlans.map((plan) => (
               <article
                 key={plan.name}
                 className={[
-                  "relative overflow-hidden rounded-[1.75rem] border p-6 md:p-7",
+                  "flex h-full flex-col rounded-[1.8rem] border p-6",
                   plan.featured
-                    ? "border-emerald-400/20 bg-gradient-to-br from-emerald-400/12 via-white/6 to-transparent"
-                    : "border-white/10 bg-black/20",
+                    ? "border-emerald-200 bg-emerald-50/70 shadow-[0_18px_40px_rgba(16,185,129,0.08)]"
+                    : "border-slate-200 bg-white shadow-[0_10px_30px_rgba(15,23,42,0.04)]",
                 ].join(" ")}
               >
-                {plan.featured ? (
-                  <div className="absolute right-4 top-4 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-emerald-200">
-                    Recommended
-                  </div>
-                ) : null}
-
-                <p className="text-xs font-medium uppercase tracking-[0.22em] text-zinc-500">{plan.eyebrow}</p>
-                <h3 className="mt-3 text-2xl font-semibold">{plan.name}</h3>
-                <p className="mt-2 max-w-xl text-sm leading-6 text-zinc-300">{plan.description}</p>
-
-                <div className="mt-6 flex flex-wrap items-end gap-x-3 gap-y-2">
-                  <span className="text-4xl font-semibold">{plan.price}</span>
-                  <span className="pb-1 text-sm text-zinc-400">{plan.period}</span>
-                  <span className="pb-1 text-sm text-zinc-500">or {plan.annualPrice} {plan.annualPeriod}</span>
+                <div className="flex items-center gap-3">
+                  <p className="text-xs uppercase tracking-[0.18em] text-slate-500">{plan.name}</p>
+                  {plan.featured ? (
+                    <div className="inline-flex w-fit rounded-full border border-emerald-200 bg-white px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-emerald-900">
+                      Recommended
+                    </div>
+                  ) : null}
                 </div>
+                <div className="mt-3 flex items-end gap-2">
+                  <span className="text-4xl font-semibold tracking-tight text-slate-950">{plan.price}</span>
+                  <span className="pb-1 text-sm text-slate-500">{plan.period}</span>
+                </div>
+                <p className="mt-4 text-sm leading-6 text-slate-600">{plan.description}</p>
 
-                <p className={["mt-2 text-xs", plan.featured ? "text-emerald-200/80" : "text-zinc-500"].join(" ")}>
-                  {plan.note}
-                </p>
-
-                <ul className="mt-6 space-y-2">
-                  {plan.highlights.map((item) => (
-                    <li key={item} className="flex items-start gap-3 rounded-2xl border border-white/8 bg-white/6 px-4 py-3 text-sm text-zinc-200">
-                      <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
-                      <span>{item}</span>
+                <ul className="mt-6 grid gap-2">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
+                      <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                      <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
 
                 <Link
-                  href={plan.href}
+                  href="#waitlist"
                   className={[
-                    "mt-6 inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-medium transition-transform hover:-translate-y-0.5",
+                    "mt-auto inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-medium transition-transform hover:-translate-y-0.5",
                     plan.featured
-                      ? "bg-white text-zinc-950"
-                      : "border border-white/10 bg-white/5 text-white hover:bg-white/10",
+                      ? "bg-emerald-600 text-white hover:bg-emerald-500"
+                      : "border border-slate-200 bg-white text-slate-900 hover:bg-slate-50",
                   ].join(" ")}
                 >
-                  {plan.cta}
+                  Request access
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </article>
@@ -349,30 +434,29 @@ export default function Home() {
 
         <WaitlistSignupForm />
 
-        {/* Footer */}
-        <footer className="landing-fade-up mt-16 border-t border-white/8 py-8" style={{ animationDelay: "0.58s" }}>
-          <div className="flex flex-col items-center gap-5 text-center">
-            {/* Brand + copyright on one line */}
-            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
-              <BrandLogo href="/" variant="white" className="h-6 w-auto" />
-              <span className="text-zinc-600">·</span>
-              <span className="text-sm text-zinc-500">© {new Date().getFullYear()} Webxpress Technologies MadeIT</span>
-              <span className="text-zinc-700">·</span>
-              <span className="text-xs uppercase tracking-[0.22em] text-zinc-600">{APP_VERSION_LABEL}</span>
+        <footer className="border-t border-slate-200 py-8">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
+              <BrandLogo href="/" variant="color" className="h-6 w-auto" />
+              <span className="text-xs uppercase tracking-[0.22em] text-slate-400">{APP_VERSION_LABEL}</span>
             </div>
 
-            {/* Legal links — single row, wraps gracefully */}
-            <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-              <Link href="/privacy-policy"  className="text-xs text-zinc-600 transition-colors hover:text-zinc-400">Privacy Policy</Link>
-              <Link href="/terms-of-use"    className="text-xs text-zinc-600 transition-colors hover:text-zinc-400">Terms of Use</Link>
-              <Link href="/data-compliance" className="text-xs text-zinc-600 transition-colors hover:text-zinc-400">Data &amp; Compliance</Link>
-              <Link href="/ip-infringement" className="text-xs text-zinc-600 transition-colors hover:text-zinc-400">IP Infringement</Link>
+            <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-500">
+              <Link href="/privacy-policy" className="transition-colors hover:text-slate-950">
+                Privacy Policy
+              </Link>
+              <Link href="/terms-of-use" className="transition-colors hover:text-slate-950">
+                Terms of Use
+              </Link>
+              <Link href="/data-compliance" className="transition-colors hover:text-slate-950">
+                Data &amp; Compliance
+              </Link>
+              <Link href="/ip-infringement" className="transition-colors hover:text-slate-950">
+                IP Infringement
+              </Link>
             </nav>
-
-            <p className="text-xs text-zinc-700">Built for agencies &amp; freelancers.</p>
           </div>
         </footer>
-
       </div>
     </main>
   );
