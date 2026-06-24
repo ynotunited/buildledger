@@ -4,11 +4,23 @@ import TelemetryProvider from "@/components/telemetry/TelemetryProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BuildLedger | Business OS for Digital Agencies",
-  description: "Run your digital business from one place. From proposal to payment.",
+  metadataBase: new URL("https://buildledger.madeitcodes.online"),
+  title: "BuildLedger | client finance workspace",
+  description: "Create invoices, reconcile transactions, and review ledger entries in one live SaaS workspace.",
   icons: {
     icon: "/icon.png",
     apple: "/apple-icon.png",
+  },
+  openGraph: {
+    title: "BuildLedger | client finance workspace",
+    description: "Create invoices, reconcile transactions, and review ledger entries in one live SaaS workspace.",
+    url: "https://buildledger.madeitcodes.online",
+    siteName: "BuildLedger",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BuildLedger | client finance workspace",
+    description: "Create invoices, reconcile transactions, and review ledger entries in one live SaaS workspace.",
   },
 };
 

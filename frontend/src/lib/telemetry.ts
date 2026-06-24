@@ -112,6 +112,7 @@ export async function trackEvent(eventName: string, properties: Record<string, u
   }
 
   ensurePosthogInitialized();
+
   try {
     await ensureCsrfCookie();
   } catch {

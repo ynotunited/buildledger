@@ -43,13 +43,13 @@ export default function InviteOnlyBanner({ compact = false }: { compact?: boolea
 
   if (compact) {
     return (
-      <div className="mb-4 flex items-start gap-2.5 rounded-2xl border border-amber-500/20 bg-amber-500/10 px-3 py-3 text-sm text-amber-100 sm:gap-3 sm:px-4">
-        <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-200" />
+      <div className="mb-4 flex items-start gap-2.5 rounded-2xl border border-amber-200 bg-amber-50 px-3 py-3 text-sm text-amber-900 sm:gap-3 sm:px-4">
+        <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
         <div>
-          <p className="font-medium leading-5 text-amber-200">Invite-only mode is active.</p>
-          <p className="mt-1 leading-5 text-amber-100/80">
+          <p className="font-medium leading-5 text-amber-900">Invite-only mode is active.</p>
+          <p className="mt-1 leading-5 text-amber-900/80">
             New accounts need an approved invitation.{" "}
-            <Link href="/#waitlist" className="underline underline-offset-2 hover:text-amber-50">
+            <Link href="/#waitlist" className="underline underline-offset-2 hover:text-amber-950">
               Request access
             </Link>
             .
@@ -60,22 +60,22 @@ export default function InviteOnlyBanner({ compact = false }: { compact?: boolea
   }
 
   return (
-    <div className="landing-fade-up mt-4 rounded-2xl border border-amber-500/20 bg-amber-500/10 px-3 py-3 text-sm text-amber-100 sm:mt-6 sm:px-4">
+    <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 px-3 py-3 text-sm text-amber-900 sm:px-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-start gap-2.5 sm:gap-3">
-          <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-200" />
+          <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
           <div>
-            <p className="font-medium leading-5 text-amber-200">Invite-only mode is active.</p>
-            <p className="mt-1 leading-5 text-amber-100/80">
+            <p className="font-medium leading-5 text-amber-900">Invite-only mode is active.</p>
+            <p className="mt-1 leading-5 text-amber-900/80">
               New accounts need an approved invitation.{" "}
-              <Link href="/#waitlist" className="underline underline-offset-2 hover:text-amber-50">
+              <Link href="/#waitlist" className="underline underline-offset-2 hover:text-amber-950">
                 Request access
               </Link>
               .
             </p>
           </div>
         </div>
-        <span className="text-[0.65rem] uppercase tracking-[0.24em] text-amber-200/70">Controlled launch</span>
+        <span className="text-[0.65rem] uppercase tracking-[0.24em] text-amber-700/80">Controlled launch</span>
       </div>
     </div>
   );
