@@ -107,21 +107,26 @@ export default function Home() {
       </div>
 
       <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-6 py-8">
-        <header className="landing-fade-up flex items-center justify-between gap-4" style={{ animationDelay: "0.05s" }}>
+        <header
+          className="landing-fade-up flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+          style={{ animationDelay: "0.05s" }}
+        >
           <div className="landing-float min-w-0 shrink" style={{ animationDuration: "7s" }}>
-            <BrandLogo href="/" variant="white" className="h-8 w-auto" priority />
-            <p className="mt-1 text-xs text-zinc-400 sm:text-sm">From proposal to payment.</p>
+            <div className="flex items-center justify-between gap-3 sm:block">
+              <BrandLogo href="/" variant="white" className="h-7 w-auto sm:h-8" priority />
+              <p className="mt-0 text-[11px] text-zinc-400 sm:mt-1 sm:text-sm">From proposal to payment.</p>
+            </div>
           </div>
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:items-center">
             <Link
               href="/login"
-              className="rounded-full border border-white/10 px-3 py-1.5 text-xs font-medium text-zinc-200 transition-colors hover:border-white/20 hover:bg-white/5 sm:px-4 sm:py-2 sm:text-sm"
+              className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 px-3 text-xs font-medium text-zinc-200 transition-colors hover:border-white/20 hover:bg-white/5 sm:h-auto sm:px-4 sm:py-2 sm:text-sm"
             >
               Sign in
             </Link>
             <Link
               href="#waitlist"
-              className="rounded-full bg-emerald-400 px-3 py-1.5 text-xs font-medium text-zinc-950 transition-transform hover:-translate-y-0.5 sm:px-4 sm:py-2 sm:text-sm"
+              className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-full bg-emerald-400 px-4 text-xs font-medium text-zinc-950 transition-transform hover:-translate-y-0.5 sm:h-auto sm:px-4 sm:py-2 sm:text-sm"
             >
               <span className="sm:hidden">Request access</span>
               <span className="hidden sm:inline">Request access</span>
