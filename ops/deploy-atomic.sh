@@ -53,8 +53,10 @@ ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 echo "==> Restarting frontend process"
 (
   cd "$CURRENT_LINK/frontend"
-  pm2 start npm --name buildledger-frontend -- start || true
-  pm2 restart buildledger-frontend --update-env
+  if pm2 describe buildledger-frontend >/dev/null 2>&1; then
+    pm2 delete buildledger-frontend
+  fi
+  pm2 start npm --name buildledger-frontend -- start
   pm2 save
 )
 
