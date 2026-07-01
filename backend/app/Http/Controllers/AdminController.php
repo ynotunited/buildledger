@@ -24,6 +24,7 @@ use App\Notifications\WaitlistInvitationApproved;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 class AdminController extends Controller
 {
@@ -92,8 +93,8 @@ class AdminController extends Controller
                 ->where('event_type', 'captured')
                 ->where('occurred_at', '>=', $last30Days)
                 ->count(),
-            'waitlist_signups_total' => WaitlistSignup::query()->count(),
-            'waitlist_signups_30d' => WaitlistSignup::query()->where('created_at', '>=', $last30Days)->count(),
+            'waitlist_signups_total' => $this->safeWaitlistCount(),
+            'waitlist_signups_30d' => $this->safeWaitlistCount($last30Days),
             'operational_events_7d' => OperationalEvent::query()->where('occurred_at', '>=', $last7Days)->count(),
             'backup_events_7d' => OperationalEvent::query()->where('category', 'backup')->where('occurred_at', '>=', $last7Days)->count(),
             'reconciliation_events_7d' => OperationalEvent::query()->where('category', 'reconciliation')->where('occurred_at', '>=', $last7Days)->count(),
@@ -197,24 +198,7 @@ class AdminController extends Controller
                 'created_at' => $payment->created_at,
             ]);
 
-        $recentWaitlistSignups = WaitlistSignup::query()
-            ->with('approvedBy:id,name,email')
-            ->latest('id')
-            ->limit(5)
-            ->get()
-            ->map(fn (WaitlistSignup $signup) => [
-                'id' => $signup->id,
-                'name' => $signup->name,
-                'email' => $signup->email,
-                'source' => $signup->source,
-                'status' => $signup->status,
-                'approved_at' => $signup->approved_at,
-                'activated_at' => $signup->activated_at,
-                'rejected_at' => $signup->rejected_at,
-                'approved_by_name' => $signup->approvedBy?->name,
-                'ip_address' => $signup->ip_address,
-                'created_at' => $signup->created_at,
-            ]);
+        $recentWaitlistSignups = $this->safeRecentWaitlistSignups();
 
         $recentSupportSessions = ImpersonationEvent::query()
             ->with([
@@ -298,6 +282,51 @@ class AdminController extends Controller
                 'updated_at' => app(InviteModeManager::class)->updatedAt(),
             ],
         ]);
+    }
+
+    private function safeWaitlistCount(?\Carbon\CarbonInterface $since = null): int
+    {
+        if (! Schema::hasTable((new WaitlistSignup())->getTable())) {
+            return 0;
+        }
+
+        $query = WaitlistSignup::query();
+
+        if ($since !== null) {
+            $query->where('created_at', '>=', $since);
+        }
+
+        return $query->count();
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function safeRecentWaitlistSignups(): array
+    {
+        if (! Schema::hasTable((new WaitlistSignup())->getTable())) {
+            return [];
+        }
+
+        return WaitlistSignup::query()
+            ->with('approvedBy:id,name,email')
+            ->latest('id')
+            ->limit(5)
+            ->get()
+            ->map(fn (WaitlistSignup $signup) => [
+                'id' => $signup->id,
+                'name' => $signup->name,
+                'email' => $signup->email,
+                'source' => $signup->source,
+                'status' => $signup->status,
+                'approved_at' => $signup->approved_at,
+                'activated_at' => $signup->activated_at,
+                'rejected_at' => $signup->rejected_at,
+                'approved_by_name' => $signup->approvedBy?->name,
+                'ip_address' => $signup->ip_address,
+                'created_at' => $signup->created_at,
+            ])
+            ->all();
     }
 
     public function startImpersonation(Request $request, User $user)
