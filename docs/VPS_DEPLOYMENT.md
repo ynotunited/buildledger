@@ -291,17 +291,21 @@ curl -I https://api.buildledger.madeitcodes.online/readyz
 
 ## 13. Future updates
 
-When you push changes to GitHub:
+Do not deploy by overwriting the live checkout in place.
 
-Run these line by line.
+Use an atomic release instead:
 
 ```bash
-cd /var/www/buildledger
-git pull origin main
-cd backend && composer install --no-dev --optimize-autoloader
-cd ../frontend && npm ci && npm run build
-pm2 restart buildledger-frontend
-php /var/www/buildledger/backend/artisan migrate --force
+sudo bash /var/www/buildledger/ops/deploy-atomic.sh
+```
+
+That script builds a new release first, then flips `/var/www/buildledger/current` only after the build passes.
+
+If you need to run migrations after the release swap, run them from the new `current` path:
+
+```bash
+cd /var/www/buildledger/current/backend
+php artisan migrate --force
 ```
 
 ## Notes
