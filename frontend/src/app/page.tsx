@@ -17,6 +17,9 @@ import InviteOnlyBanner from "@/components/marketing/InviteOnlyBanner";
 import WaitlistSignupForm from "@/components/marketing/WaitlistSignupForm";
 import { APP_VERSION_LABEL } from "@/lib/app-version";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const heroChips = ["Invoices", "Reconciliation", "Ledger entries", "Payment follow-up"] as const;
 
 const workflowCards = [
