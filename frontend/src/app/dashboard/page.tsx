@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import AppShell from "@/components/layout/AppShell";
-import { DollarSign, Briefcase, FileText, Users, ArrowRight } from "lucide-react";
+import { DollarSign, Briefcase, FileText, Users, ArrowRight, Sparkles, Plus, RefreshCw } from "lucide-react";
 import axiosInstance from "@/lib/axios";
 import Link from "next/link";
 
@@ -63,10 +63,10 @@ const METRIC_CARDS = [
 ];
 
 const QUICK_ACTIONS = [
-  { label: "New Proposal",  href: "/proposals/create",  color: "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20" },
-  { label: "New Project",   href: "/projects/create",   color: "bg-green-500/10 text-green-500 hover:bg-green-500/20" },
-  { label: "Record Payment",href: "/payments/record",   color: "bg-orange-500/10 text-orange-500 hover:bg-orange-500/20" },
-  { label: "Add Client",    href: "/clients",            color: "bg-purple-500/10 text-purple-500 hover:bg-purple-500/20" },
+  { label: "New Proposal",  href: "/proposals/create",  color: "bg-slate-950 text-white hover:bg-slate-800" },
+  { label: "New Project",   href: "/projects/create",   color: "bg-slate-100 text-slate-950 hover:bg-slate-200" },
+  { label: "Record Payment",href: "/payments/record",   color: "bg-slate-100 text-slate-950 hover:bg-slate-200" },
+  { label: "Add Client",    href: "/clients",            color: "bg-slate-100 text-slate-950 hover:bg-slate-200" },
 ];
 
 export default function DashboardPage() {
@@ -121,38 +121,61 @@ export default function DashboardPage() {
 
   return (
     <AppShell>
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* Header */}
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            Here&apos;s what&apos;s happening with your business today.
-          </p>
+        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.04)] lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600">
+              <Sparkles className="h-3.5 w-3.5" />
+              Dashboard
+            </div>
+            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+              Keep invoices, projects, and payments moving in one place.
+            </h1>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
+              Here&apos;s what&apos;s happening with your business today.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/invoices/create"
+              className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-4 py-2.5 text-sm font-medium text-white transition-transform hover:-translate-y-0.5"
+            >
+              <Plus className="h-4 w-4" />
+              Create invoice
+            </Link>
+            <Link
+              href="/payments/record"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 transition-colors hover:bg-slate-50"
+            >
+              Reconcile transaction
+            </Link>
+          </div>
         </div>
 
         {/* Metric cards */}
-        <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 grid-cols-2 xl:grid-cols-4">
           {METRIC_CARDS.map((card) => {
             const Icon = card.icon;
             return (
-              <Card key={card.key}>
+              <Card key={card.key} className="rounded-[1.5rem] border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                  <CardTitle className="text-sm font-medium text-slate-500">
                     {card.label}
                   </CardTitle>
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${card.bg}`}>
-                    <Icon className={`w-4 h-4 ${card.color}`} />
+                  <div className={`flex h-9 w-9 items-center justify-center rounded-2xl ${card.bg}`}>
+                    <Icon className={`h-4 w-4 ${card.color}`} />
                   </div>
                 </CardHeader>
                 <CardContent>
                   {loading ? (
                     <Skeleton className="h-7 w-24 mt-1" />
                   ) : (
-                    <div className="text-2xl font-bold">
+                    <div className="text-2xl font-semibold tracking-tight text-slate-950">
                       {card.format(metrics?.[card.key] ?? 0)}
                     </div>
                   )}
-                  <p className="text-xs text-muted-foreground mt-1">{card.sub}</p>
+                  <p className="mt-1 text-xs text-slate-500">{card.sub}</p>
                 </CardContent>
               </Card>
             );
@@ -160,16 +183,28 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick actions */}
-        <div>
-          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-            Quick Actions
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
+                Quick actions
+              </h2>
+              <p className="mt-1 text-sm text-slate-600">The actions that matter most are always one click away.</p>
+            </div>
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Refresh
+            </button>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
             {QUICK_ACTIONS.map((action) => (
               <Link
                 key={action.label}
                 href={action.href}
-                className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium transition-colors ${action.color}`}
+                className={`flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-medium transition-colors ${action.color}`}
               >
                 {action.label}
               </Link>
@@ -178,13 +213,16 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent activity */}
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-              Recent Activity
-            </h2>
-            <Link href="/invoices" className="text-xs text-primary hover:underline flex items-center gap-1">
-              View all <ArrowRight className="w-3 h-3" />
+        <div className="rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
+                Recent activity
+              </h2>
+              <p className="mt-1 text-sm text-slate-600">Latest invoices and projects stay visible here.</p>
+            </div>
+            <Link href="/invoices" className="inline-flex items-center gap-1 text-sm font-medium text-slate-950 hover:underline">
+              View all <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
@@ -195,7 +233,7 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : activity.length === 0 ? (
-            <div className="text-center py-10 text-muted-foreground border rounded-xl border-dashed text-sm">
+            <div className="border border-dashed border-slate-200 py-10 text-center text-sm text-slate-500 rounded-2xl bg-slate-50">
               No recent activity yet. Create a proposal or project to get started.
             </div>
           ) : (
@@ -204,20 +242,20 @@ export default function DashboardPage() {
                 <Link
                   key={i}
                   href={item.link}
-                  className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-card hover:bg-secondary/30 transition-colors group"
+                  className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:bg-slate-100/80"
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`w-2 h-2 rounded-full shrink-0 ${item.type === "invoice" ? "bg-orange-500" : "bg-blue-500"}`} />
+                    <div className={`h-2.5 w-2.5 rounded-full shrink-0 ${item.type === "invoice" ? "bg-amber-500" : "bg-sky-500"}`} />
                     <div>
-                      <p className="text-sm font-medium">{item.title}</p>
-                      <p className="text-xs text-muted-foreground">{item.subtitle}</p>
+                      <p className="text-sm font-medium text-slate-950">{item.title}</p>
+                      <p className="text-xs text-slate-500">{item.subtitle}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-slate-500">
                       {new Date(item.time).toLocaleDateString()}
                     </span>
-                    <ArrowRight className="w-3.5 h-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowRight className="h-3.5 w-3.5 text-slate-400 opacity-0 transition-opacity group-hover:opacity-100" />
                   </div>
                 </Link>
               ))}

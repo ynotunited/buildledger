@@ -125,26 +125,31 @@ export default function ClientsPage() {
   return (
     <AppShell>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight">{isAdmin ? "All Clients" : "Clients"}</h1>
-            <p className="text-muted-foreground text-sm">
+        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.04)] lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
+              Clients
+            </p>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+              {isAdmin ? "All clients" : "Clients"}
+            </h1>
+            <p className="mt-2 text-sm leading-6 text-slate-600 sm:text-base">
               {isAdmin
                 ? "View and manage clients across every workspace in the platform."
                 : "Manage your leads and active clients."}
             </p>
           </div>
-          <Button size="sm" onClick={resetForm}>
-            <Plus className="w-4 h-4 mr-2" />
-            {editingId ? "New Client" : "Add Client"}
+          <Button size="sm" onClick={resetForm} className="rounded-full bg-slate-950 px-4 text-white hover:bg-slate-800">
+            <Plus className="mr-2 h-4 w-4" />
+            {editingId ? "New client" : "Add client"}
           </Button>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{editingId ? "Edit Client" : "Create Client"}</CardTitle>
+        <Card className="rounded-[1.75rem] border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
+          <CardHeader className="border-b border-slate-100 pb-4">
+            <CardTitle className="text-lg text-slate-950">{editingId ? "Edit client" : "Create client"}</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-5 md:p-6">
             <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
@@ -168,7 +173,7 @@ export default function ClientsPage() {
                   id="status"
                   value={form.status}
                   onChange={(e) => setForm({ ...form, status: e.target.value })}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  className="flex h-11 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 shadow-sm"
                 >
                   {["Lead", "Negotiation", "Active", "Completed", "Dormant"].map((status) => (
                     <option key={status} value={status}>{status}</option>
@@ -176,18 +181,18 @@ export default function ClientsPage() {
                 </select>
               </div>
               <div className="md:col-span-2 flex gap-3">
-                <Button type="submit" disabled={saving}>
-                  {saving ? "Saving..." : editingId ? "Update Client" : "Create Client"}
+                <Button type="submit" disabled={saving} className="rounded-full bg-slate-950 text-white hover:bg-slate-800">
+                  {saving ? "Saving..." : editingId ? "Update client" : "Create client"}
                 </Button>
                 {editingId && (
-                  <Button type="button" variant="outline" onClick={resetForm}>
+                  <Button type="button" variant="outline" onClick={resetForm} className="rounded-full border-slate-200 bg-white hover:bg-slate-50">
                     Cancel
                   </Button>
                 )}
               </div>
             </form>
             {isAdmin && (
-              <p className="mt-3 text-xs text-muted-foreground">
+              <p className="mt-3 text-xs text-slate-500">
                 Admins can add clients here for the current workspace. If you’re testing, this will create a real client record rather than a user account.
               </p>
             )}
@@ -195,41 +200,41 @@ export default function ClientsPage() {
         </Card>
 
         {loading ? (
-          <div className="flex items-center justify-center p-8">Loading clients...</div>
+          <div className="rounded-[1.5rem] border border-slate-200 bg-white p-8 text-center text-slate-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">Loading clients...</div>
         ) : clients.length === 0 ? (
-          <div className="text-center p-8 text-muted-foreground border rounded-lg border-dashed">
+          <div className="rounded-[1.5rem] border border-dashed border-slate-200 bg-white p-8 text-center text-slate-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
             No clients found. Add a client to get started.
           </div>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {clients.map((client) => (
-                <Card key={client.id} className="relative overflow-hidden group hover:shadow-md transition-shadow">
-                <CardHeader className="pb-2">
+                <Card key={client.id} className="group relative overflow-hidden rounded-[1.5rem] border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] transition-shadow hover:shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+                <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
-                    <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                      <Building className="w-5 h-5 text-muted-foreground" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100">
+                      <Building className="h-5 w-5 text-slate-500" />
                     </div>
                     <div className="flex items-center gap-1">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => startEdit(client)}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:bg-slate-100 hover:text-slate-950" onClick={() => startEdit(client)}>
                         <Pencil className="w-4 h-4" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => void deleteClient(client.id)}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:bg-slate-100 hover:text-slate-950" onClick={() => void deleteClient(client.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
                   </div>
-                  <CardTitle className="text-lg mt-2">{client.name}</CardTitle>
+                  <CardTitle className="mt-2 text-lg text-slate-950">{client.name}</CardTitle>
                 </CardHeader>
-                  <CardContent>
-                    <div className="text-sm text-muted-foreground mb-4">
+                  <CardContent className="space-y-4">
+                    <div className="text-sm text-slate-600">
                       {client.email || "No email"} • {client.phone || "No phone"}
                     </div>
                     {isAdmin && (
-                      <div className="mb-3 text-xs text-muted-foreground">
+                      <div className="text-xs text-slate-500">
                         Owned by {client.owner_name ?? "Unknown owner"} {client.owner_email ? `(${client.owner_email})` : ""}
                       </div>
                     )}
-                    <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                    <div className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">
                       {client.status}
                     </div>
                   </CardContent>

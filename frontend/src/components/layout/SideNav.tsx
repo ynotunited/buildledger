@@ -33,14 +33,14 @@ export default function SideNav() {
   ];
 
   return (
-    <div className="flex flex-col h-full py-6 px-4">
+    <div className="flex h-full flex-col px-4 py-6">
       {/* Logo */}
-      <div className="mb-10 px-2">
-        <BrandLogo href="/dashboard" variant="color" className="h-10 w-auto max-w-[11rem]" />
+      <div className="mb-8 px-2">
+        <BrandLogo href="/dashboard" variant="color" className="h-9 w-auto max-w-[11rem]" />
       </div>
 
       {/* Nav links */}
-      <nav className="flex-1 space-y-0.5">
+      <nav className="flex-1 space-y-1">
         {navItems.map((item) => {
           const Icon    = item.icon;
           const active  = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -49,13 +49,13 @@ export default function SideNav() {
               key={item.label}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all active:scale-[0.98]",
+                "flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-all active:scale-[0.98]",
                 active
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                  ? "bg-slate-950 text-white shadow-[0_8px_24px_rgba(15,23,42,0.12)]"
+                  : "text-slate-500 hover:bg-slate-100/80 hover:text-slate-950"
               )}
             >
-              <Icon className="w-4 h-4 shrink-0" />
+              <Icon className={cn("h-4 w-4 shrink-0", active ? "text-white" : "text-slate-400")} />
               {item.label}
             </Link>
           );
@@ -63,24 +63,24 @@ export default function SideNav() {
       </nav>
 
       {/* User footer */}
-      <div className="mt-auto px-2 border-t border-border pt-4">
+      <div className="mt-auto border-t border-slate-200 px-2 pt-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-secondary border border-border flex items-center justify-center text-xs font-semibold text-muted-foreground">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-xs font-semibold text-slate-600">
             {user?.name?.charAt(0).toUpperCase() ?? "U"}
           </div>
           <div className="flex flex-col min-w-0">
-            <span className="text-sm font-medium text-foreground truncate">{user?.name ?? "My Account"}</span>
-            <span className="text-xs capitalize text-muted-foreground">{user?.role?.replace("_", " ") ?? "Owner"}</span>
+            <span className="truncate text-sm font-medium text-slate-950">{user?.name ?? "My Account"}</span>
+            <span className="text-xs capitalize text-slate-500">{user?.role?.replace("_", " ") ?? "Owner"}</span>
           </div>
         </div>
         <button
           onClick={() => void logout()}
-          className="mt-3 flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary/50 hover:text-foreground"
+          className="mt-3 flex w-full items-center gap-2 rounded-2xl px-3 py-2.5 text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-950"
         >
           <LogOut className="h-4 w-4" />
           Sign out
         </button>
-        <p className="mt-4 px-2 text-[11px] uppercase tracking-[0.22em] text-muted-foreground/70">
+        <p className="mt-4 px-2 text-[11px] uppercase tracking-[0.22em] text-slate-400">
           BuildLedger {APP_VERSION_LABEL}
         </p>
       </div>

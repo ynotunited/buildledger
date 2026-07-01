@@ -96,61 +96,66 @@ export default function InvoicesPage() {
   return (
     <AppShell>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight">Invoices</h1>
-            <p className="text-muted-foreground text-sm">Manage billing and collect payments.</p>
+        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.04)] lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">Invoices</p>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+              Manage billing and collect payments.
+            </h1>
+            <p className="mt-2 text-sm leading-6 text-slate-600 sm:text-base">
+              Keep your invoices in one readable queue with the same card rhythm used across the dashboard.
+            </p>
           </div>
           <Link href="/invoices/create">
-            <Button size="sm">
-              <Plus className="w-4 h-4 mr-2" />
-              New Invoice
+            <Button size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800">
+              <Plus className="mr-2 h-4 w-4" />
+              New invoice
             </Button>
           </Link>
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center p-8">Loading invoices...</div>
+          <div className="rounded-[1.5rem] border border-slate-200 bg-white p-8 text-center text-slate-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">Loading invoices...</div>
         ) : invoices.length === 0 ? (
-          <div className="text-center p-8 text-muted-foreground border rounded-lg border-dashed">
+          <div className="rounded-[1.5rem] border border-dashed border-slate-200 bg-white p-8 text-center text-slate-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
             No invoices found. Convert a contract to an invoice to get started.
           </div>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {invoices.map((invoice) => (
-              <Card key={invoice.id} className={`relative overflow-hidden group hover:shadow-md transition-shadow ${invoice.status === 'Overdue' ? 'border-destructive/50 shadow-destructive/10' : ''}`}>
-                <CardHeader className="pb-2">
+              <Card key={invoice.id} className={`group relative overflow-hidden rounded-[1.5rem] border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] transition-shadow hover:shadow-[0_18px_40px_rgba(15,23,42,0.08)] ${invoice.status === 'Overdue' ? 'border-amber-300' : ''}`}>
+                <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center space-x-2">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${invoice.status === 'Overdue' ? 'bg-destructive/10' : 'bg-secondary'}`}>
-                        <CreditCard className={`w-5 h-5 ${invoice.status === 'Overdue' ? 'text-destructive' : 'text-muted-foreground'}`} />
+                      <div className={`flex h-10 w-10 items-center justify-center rounded-2xl ${invoice.status === 'Overdue' ? 'bg-amber-100' : 'bg-slate-100'}`}>
+                        <CreditCard className={`h-5 w-5 ${invoice.status === 'Overdue' ? 'text-amber-700' : 'text-slate-500'}`} />
                       </div>
                       <div>
                         <Link href={`/invoices/${invoice.id}`} className="hover:underline">
-                          <CardTitle className="text-lg">{invoice.invoice_number}</CardTitle>
+                          <CardTitle className="text-lg text-slate-950">{invoice.invoice_number}</CardTitle>
                         </Link>
-                        <p className="text-sm text-muted-foreground">{invoice.client.name}</p>
+                        <p className="text-sm text-slate-600">{invoice.client.name}</p>
                       </div>
                     </div>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => void deleteInvoice(invoice.id)}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:bg-slate-100 hover:text-slate-950" onClick={() => void deleteInvoice(invoice.id)}>
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-4">
                   <div className="flex justify-between items-center mt-4">
-                    <div className={`flex items-center text-sm font-medium ${invoice.status === 'Overdue' ? 'text-destructive' : ''}`}>
+                    <div className={`flex items-center text-sm font-medium ${invoice.status === 'Overdue' ? 'text-amber-700' : 'text-slate-700'}`}>
                       {getStatusIcon(invoice.status)}
                       {invoice.status}
                     </div>
-                    <div className="font-bold text-lg">
+                    <div className="text-lg font-semibold tracking-tight text-slate-950">
                       ${Number(invoice.total).toLocaleString()}
                     </div>
                   </div>
-                  <div className="mt-4 pt-4 border-t border-border flex justify-between items-center">
-                    <span className="text-xs text-muted-foreground">Due: {new Date(invoice.due_date).toLocaleDateString()}</span>
-                    <Button variant="outline" size="sm" onClick={() => downloadPdf(invoice.id, invoice.invoice_number)}>
-                      <Download className="w-4 h-4 mr-2" />
+                  <div className="flex items-center justify-between border-t border-slate-100 pt-4">
+                    <span className="text-xs text-slate-500">Due: {new Date(invoice.due_date).toLocaleDateString()}</span>
+                    <Button variant="outline" size="sm" onClick={() => downloadPdf(invoice.id, invoice.invoice_number)} className="rounded-full border-slate-200 bg-white hover:bg-slate-50">
+                      <Download className="mr-2 h-4 w-4" />
                       PDF
                     </Button>
                   </div>

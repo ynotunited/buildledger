@@ -22,7 +22,7 @@ export default function BottomNav() {
 
   return (
     <div
-      className="grid h-full w-full max-w-md mx-auto"
+      className="mx-auto grid h-full w-full max-w-md"
       style={{ gridTemplateColumns: `repeat(${navItems.length}, minmax(0, 1fr))` }}
     >
       {navItems.map((item) => {
@@ -31,13 +31,13 @@ export default function BottomNav() {
         return (
           <Link
             key={item.label}
-            href={item.href}
-            className={cn(
-              "flex flex-col items-center justify-center w-full h-full transition-colors",
-              active ? "text-primary" : "text-muted-foreground hover:text-foreground"
+          href={item.href}
+          className={cn(
+              "flex h-full w-full flex-col items-center justify-center transition-colors",
+              active ? "text-slate-950" : "text-slate-400 hover:text-slate-950"
             )}
           >
-            <Icon className={cn("w-5 h-5 mb-1 transition-transform", active && "scale-110")} />
+            <Icon className={cn("mb-1 h-5 w-5 transition-transform", active && "scale-110")} />
             <span className={cn("text-[10px] font-medium", active && "font-semibold")}>
               {item.label}
             </span>

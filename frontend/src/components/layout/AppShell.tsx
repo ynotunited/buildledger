@@ -60,60 +60,68 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex h-screen w-full bg-background overflow-hidden">
+    <div className="flex min-h-dvh w-full bg-[#eef1f6] text-slate-950 overflow-hidden">
       {/* Desktop Side Navigation */}
-      <aside className="hidden md:flex flex-col w-64 border-r border-border bg-card">
+      <aside className="hidden md:flex flex-col w-64 shrink-0 border-r border-slate-200/80 bg-white/90 backdrop-blur-xl">
         <SideNav />
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col h-full overflow-y-auto pb-16 md:pb-0 relative">
+      <main className="relative flex min-w-0 flex-1 flex-col overflow-y-auto pb-20 md:pb-0">
         {/* Top bar — desktop only */}
-        <header className="hidden md:flex items-center justify-end px-8 py-3 border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-          <NotificationBell />
+        <header className="sticky top-0 z-20 hidden md:block">
+          <div className="border-b border-slate-200/80 bg-[#eef1f6]/90 px-6 py-4 backdrop-blur-xl">
+            <div className="flex items-center justify-end gap-3">
+              <NotificationBell />
+            </div>
+          </div>
         </header>
 
-        <div className="flex-1 p-4 md:p-8 max-w-6xl mx-auto w-full">
+        <div className="mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-4 py-4 md:px-6 md:py-6 lg:px-8">
+          <div className="rounded-[2rem] border border-slate-200/80 bg-white shadow-[0_18px_60px_rgba(15,23,42,0.08)] overflow-hidden">
+            <div className="px-4 py-4 md:px-6 md:py-6">
           {isImpersonating && user && (
-            <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-sky-500/20 bg-sky-500/10 p-4 text-sm text-sky-100 md:flex-row md:items-center md:justify-between">
+            <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-950 md:flex-row md:items-center md:justify-between">
               <div>
-                <p className="font-medium text-sky-200">
+                <p className="font-medium text-sky-950">
                   You are viewing this account as {user.name}.
                 </p>
-                <p className="text-sky-100/80">
+                <p className="text-sky-700">
                   Support mode is active{user.impersonator_name ? ` on behalf of ${user.impersonator_name}` : ""}. Use this to inspect the workspace exactly as the customer sees it.
                 </p>
               </div>
               <Button
                 onClick={() => void stopImpersonation()}
                 variant="secondary"
-                className="rounded-xl bg-sky-200/10 text-sky-100 hover:bg-sky-200/20"
+                className="rounded-xl border-sky-200 bg-white text-sky-950 hover:bg-sky-50"
               >
                 Return to admin
               </Button>
             </div>
           )}
           {shouldShowVerificationBanner && (
-            <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4 text-sm text-amber-100 md:flex-row md:items-center md:justify-between">
+            <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950 md:flex-row md:items-center md:justify-between">
               <div>
-                <p className="font-medium text-amber-200">Verify your email to finish setting up your account.</p>
-                <p className="text-amber-100/80">We&apos;ve added email verification, password reset, and Google sign-in support to the app.</p>
+                <p className="font-medium text-amber-950">Verify your email to finish setting up your account.</p>
+                <p className="text-amber-700">We&apos;ve added email verification, password reset, and Google sign-in support to the app.</p>
               </div>
               <button
                 onClick={() => void resendVerification()}
                 disabled={resendingVerification}
-                className="rounded-xl border border-amber-300/20 px-3 py-2 font-medium text-amber-100 transition-colors hover:bg-amber-400/10 disabled:opacity-60"
+                className="rounded-xl border border-amber-200 bg-white px-3 py-2 font-medium text-amber-950 transition-colors hover:bg-amber-50 disabled:opacity-60"
               >
                 {resendingVerification ? "Sending..." : "Resend verification"}
               </button>
             </div>
           )}
           {children}
+            </div>
+          </div>
         </div>
       </main>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 border-t border-border bg-background/80 backdrop-blur-xl z-50 px-4 pb-safe">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 border-t border-slate-200 bg-white/90 backdrop-blur-xl z-50 px-4 pb-safe">
         <BottomNav />
       </nav>
 
