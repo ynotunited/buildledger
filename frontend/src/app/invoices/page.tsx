@@ -96,7 +96,7 @@ export default function InvoicesPage() {
   return (
     <AppShell>
       <div className="space-y-6">
-        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.04)] lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-emerald-100 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.04)] lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">Invoices</p>
             <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
@@ -107,7 +107,7 @@ export default function InvoicesPage() {
             </p>
           </div>
           <Link href="/invoices/create">
-            <Button size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800">
+            <Button size="sm" className="rounded-full bg-emerald-600 text-white hover:bg-emerald-500">
               <Plus className="mr-2 h-4 w-4" />
               New invoice
             </Button>
@@ -115,20 +115,20 @@ export default function InvoicesPage() {
         </div>
 
         {loading ? (
-          <div className="rounded-[1.5rem] border border-slate-200 bg-white p-8 text-center text-slate-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">Loading invoices...</div>
+          <div className="rounded-[1.5rem] border border-emerald-100 bg-white p-8 text-center text-slate-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">Loading invoices...</div>
         ) : invoices.length === 0 ? (
-          <div className="rounded-[1.5rem] border border-dashed border-slate-200 bg-white p-8 text-center text-slate-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
+          <div className="rounded-[1.5rem] border border-dashed border-emerald-100 bg-white p-8 text-center text-slate-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
             No invoices found. Convert a contract to an invoice to get started.
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {invoices.map((invoice) => (
-              <Card key={invoice.id} className={`group relative overflow-hidden rounded-[1.5rem] border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] transition-shadow hover:shadow-[0_18px_40px_rgba(15,23,42,0.08)] ${invoice.status === 'Overdue' ? 'border-amber-300' : ''}`}>
+              <Card key={invoice.id} className={`group relative overflow-hidden rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] transition-shadow hover:shadow-[0_18px_40px_rgba(15,23,42,0.08)] ${invoice.status === 'Overdue' ? 'border-amber-300' : ''}`}>
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center space-x-2">
-                      <div className={`flex h-10 w-10 items-center justify-center rounded-2xl ${invoice.status === 'Overdue' ? 'bg-amber-100' : 'bg-slate-100'}`}>
-                        <CreditCard className={`h-5 w-5 ${invoice.status === 'Overdue' ? 'text-amber-700' : 'text-slate-500'}`} />
+                      <div className={`flex h-10 w-10 items-center justify-center rounded-2xl ${invoice.status === 'Overdue' ? 'bg-amber-100' : 'bg-emerald-50'}`}>
+                        <CreditCard className={`h-5 w-5 ${invoice.status === 'Overdue' ? 'text-amber-700' : 'text-emerald-700'}`} />
                       </div>
                       <div>
                         <Link href={`/invoices/${invoice.id}`} className="hover:underline">
@@ -137,7 +137,7 @@ export default function InvoicesPage() {
                         <p className="text-sm text-slate-600">{invoice.client.name}</p>
                       </div>
                     </div>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:bg-slate-100 hover:text-slate-950" onClick={() => void deleteInvoice(invoice.id)}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:bg-emerald-50 hover:text-emerald-700" onClick={() => void deleteInvoice(invoice.id)}>
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>

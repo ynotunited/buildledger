@@ -40,18 +40,18 @@ export default function SecurityOperationsPage() {
         <div className="space-y-3">
           <Link
             href="/admin"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-2 text-sm text-slate-500 transition-colors hover:text-emerald-700"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to admin
           </Link>
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-3xl font-bold tracking-tight">Security Operations</h1>
-            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            <h1 className="text-3xl font-semibold tracking-tight text-slate-950">Security Operations</h1>
+            <span className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-xs uppercase tracking-[0.2em] text-emerald-700">
               Team only
             </span>
           </div>
-          <p className="max-w-3xl text-sm text-muted-foreground">
+          <p className="max-w-3xl text-sm text-slate-600">
             Keep rotation and recovery in one place. Use this page when a secret is exposed, a vendor token
             needs replacement, or the live system needs a controlled recovery step.
           </p>
@@ -60,14 +60,14 @@ export default function SecurityOperationsPage() {
         <div className="grid gap-4 lg:grid-cols-3">
           <Card>
             <CardHeader className="space-y-2">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-300">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-700">
                 <KeyRound className="h-5 w-5" />
               </div>
               <CardTitle>Secrets to watch</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <CardContent className="space-y-2 text-sm text-slate-600">
               {SECRET_ITEMS.map((item) => (
-                <div key={item} className="rounded-xl border border-border bg-secondary/20 px-3 py-2">
+                <div key={item} className="rounded-xl border border-emerald-100 bg-emerald-50/30 px-3 py-2">
                   {item}
                 </div>
               ))}
@@ -76,15 +76,15 @@ export default function SecurityOperationsPage() {
 
           <Card>
             <CardHeader className="space-y-2">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-rose-500/10 text-rose-300">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-rose-50 text-rose-700">
                 <RotateCcw className="h-5 w-5" />
               </div>
               <CardTitle>Rotation flow</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <CardContent className="space-y-2 text-sm text-slate-600">
               {ROTATION_STEPS.map((step, index) => (
-                <div key={step} className="flex gap-3 rounded-xl border border-border bg-secondary/20 px-3 py-2">
-                  <span className="font-medium text-foreground">{index + 1}</span>
+                <div key={step} className="flex gap-3 rounded-xl border border-emerald-100 bg-emerald-50/30 px-3 py-2">
+                  <span className="font-medium text-slate-950">{index + 1}</span>
                   <span>{step}</span>
                 </div>
               ))}
@@ -93,15 +93,15 @@ export default function SecurityOperationsPage() {
 
           <Card>
             <CardHeader className="space-y-2">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <CardTitle>Recovery flow</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <CardContent className="space-y-2 text-sm text-slate-600">
               {RECOVERY_STEPS.map((step, index) => (
-                <div key={step} className="flex gap-3 rounded-xl border border-border bg-secondary/20 px-3 py-2">
-                  <span className="font-medium text-foreground">{index + 1}</span>
+                <div key={step} className="flex gap-3 rounded-xl border border-emerald-100 bg-emerald-50/30 px-3 py-2">
+                  <span className="font-medium text-slate-950">{index + 1}</span>
                   <span>{step}</span>
                 </div>
               ))}
@@ -117,15 +117,15 @@ export default function SecurityOperationsPage() {
             <CardContent className="space-y-3 text-sm text-muted-foreground">
               <div className="flex items-start gap-3 rounded-xl border border-border bg-secondary/20 p-4">
                 <ShieldAlert className="mt-0.5 h-4 w-4 text-rose-300" />
-                <p>Confirm the exposure, scope, and environment before changing anything.</p>
+              <p className="text-slate-600">Confirm the exposure, scope, and environment before changing anything.</p>
+            </div>
+              <div className="flex items-start gap-3 rounded-xl border border-emerald-100 bg-emerald-50/30 p-4">
+                <TriangleAlert className="mt-0.5 h-4 w-4 text-amber-600" />
+                <p className="text-slate-600">Rotate the vendor secret first, then update the VPS, then clear caches and restart services.</p>
               </div>
-              <div className="flex items-start gap-3 rounded-xl border border-border bg-secondary/20 p-4">
-                <TriangleAlert className="mt-0.5 h-4 w-4 text-amber-300" />
-                <p>Rotate the vendor secret first, then update the VPS, then clear caches and restart services.</p>
-              </div>
-              <div className="flex items-start gap-3 rounded-xl border border-border bg-secondary/20 p-4">
-                <ShieldCheck className="mt-0.5 h-4 w-4 text-emerald-300" />
-                <p>Verify the affected flow, document the rotation, and only then revoke the old secret.</p>
+              <div className="flex items-start gap-3 rounded-xl border border-emerald-100 bg-emerald-50/30 p-4">
+                <ShieldCheck className="mt-0.5 h-4 w-4 text-emerald-700" />
+                <p className="text-slate-600">Verify the affected flow, document the rotation, and only then revoke the old secret.</p>
               </div>
             </CardContent>
           </Card>
@@ -134,18 +134,18 @@ export default function SecurityOperationsPage() {
             <CardHeader>
               <CardTitle>Recovery commands</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground">
-              <div className="rounded-xl border border-border bg-secondary/20 p-4">
-                <p className="mb-2 text-xs uppercase tracking-[0.25em] text-muted-foreground">Health scan</p>
-                <code className="rounded-md bg-background px-2 py-1 text-xs text-foreground">php artisan ops:health-scan</code>
+            <CardContent className="space-y-3 text-sm text-slate-600">
+              <div className="rounded-xl border border-emerald-100 bg-emerald-50/30 p-4">
+                <p className="mb-2 text-xs uppercase tracking-[0.25em] text-slate-500">Health scan</p>
+                <code className="rounded-md bg-white px-2 py-1 text-xs text-slate-950">php artisan ops:health-scan</code>
               </div>
-              <div className="rounded-xl border border-border bg-secondary/20 p-4">
-                <p className="mb-2 text-xs uppercase tracking-[0.25em] text-muted-foreground">Backup</p>
-                <code className="rounded-md bg-background px-2 py-1 text-xs text-foreground">php artisan ops:backup</code>
+              <div className="rounded-xl border border-emerald-100 bg-emerald-50/30 p-4">
+                <p className="mb-2 text-xs uppercase tracking-[0.25em] text-slate-500">Backup</p>
+                <code className="rounded-md bg-white px-2 py-1 text-xs text-slate-950">php artisan ops:backup</code>
               </div>
-              <div className="rounded-xl border border-border bg-secondary/20 p-4">
-                <p className="mb-2 text-xs uppercase tracking-[0.25em] text-muted-foreground">Restore</p>
-                <code className="rounded-md bg-background px-2 py-1 text-xs text-foreground">
+              <div className="rounded-xl border border-emerald-100 bg-emerald-50/30 p-4">
+                <p className="mb-2 text-xs uppercase tracking-[0.25em] text-slate-500">Restore</p>
+                <code className="rounded-md bg-white px-2 py-1 text-xs text-slate-950">
                   php artisan ops:restore-backup backups/buildledger-db-YYYYMMDD_HHMMSS.json.enc --force
                 </code>
               </div>

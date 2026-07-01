@@ -51,8 +51,8 @@ export default function SideNav() {
               className={cn(
                 "flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-all active:scale-[0.98]",
                 active
-                  ? "bg-slate-950 text-white shadow-[0_8px_24px_rgba(15,23,42,0.12)]"
-                  : "text-slate-500 hover:bg-slate-100/80 hover:text-slate-950"
+                  ? "bg-emerald-500 text-white shadow-[0_8px_24px_rgba(16,185,129,0.28)]"
+                  : "text-slate-500 hover:bg-emerald-50 hover:text-emerald-700"
               )}
             >
               <Icon className={cn("h-4 w-4 shrink-0", active ? "text-white" : "text-slate-400")} />
@@ -75,7 +75,7 @@ export default function SideNav() {
         </div>
         <button
           onClick={() => void logout()}
-          className="mt-3 flex w-full items-center gap-2 rounded-2xl px-3 py-2.5 text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-950"
+          className="mt-3 flex w-full items-center gap-2 rounded-2xl px-3 py-2.5 text-sm text-slate-500 transition-colors hover:bg-emerald-50 hover:text-emerald-700"
         >
           <LogOut className="h-4 w-4" />
           Sign out

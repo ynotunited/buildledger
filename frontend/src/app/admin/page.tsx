@@ -281,22 +281,22 @@ function statusClass(status: string): string {
     case "completed":
     case "active":
     case "success":
-      return "bg-emerald-500/15 text-emerald-300 border-emerald-500/30";
+      return "bg-emerald-50 text-emerald-700 border-emerald-200";
     case "warn":
     case "warning":
     case "pending":
-      return "bg-amber-500/15 text-amber-300 border-amber-500/30";
+      return "bg-amber-50 text-amber-700 border-amber-200";
     case "approved":
-      return "bg-sky-500/15 text-sky-300 border-sky-500/30";
+      return "bg-sky-50 text-sky-700 border-sky-200";
     case "activated":
-      return "bg-emerald-500/15 text-emerald-300 border-emerald-500/30";
+      return "bg-emerald-50 text-emerald-700 border-emerald-200";
     case "fail":
     case "failed":
     case "error":
     case "critical":
-      return "bg-rose-500/15 text-rose-300 border-rose-500/30";
+      return "bg-rose-50 text-rose-700 border-rose-200";
     default:
-      return "bg-white/10 text-muted-foreground border-white/10";
+      return "bg-slate-50 text-slate-600 border-slate-200";
   }
 }
 
@@ -448,11 +448,14 @@ export default function AdminPage() {
   return (
     <AppShell>
       <div className="space-y-8">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-emerald-100 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.04)] lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Operator Console</p>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+              <span className="h-2 w-2 rounded-full bg-emerald-500" />
+              Operator console
+            </div>
+            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950">Admin Dashboard</h1>
+            <p className="mt-2 max-w-2xl text-sm text-slate-600">
               Monitor subscriptions, revenue, support load, security signals, and deployment health from one place.
             </p>
           </div>
@@ -461,7 +464,7 @@ export default function AdminPage() {
               <span className="h-2 w-2 rounded-full bg-current" />
               System health: {data?.health.status ?? "loading"}
             </div>
-            <div className={`inline-flex w-fit items-center gap-2 rounded-full border px-3 py-2 text-xs font-medium ${data?.invite_mode?.enabled ? "border-amber-500/30 bg-amber-500/10 text-amber-200" : "border-emerald-500/30 bg-emerald-500/10 text-emerald-200"}`}>
+            <div className={`inline-flex w-fit items-center gap-2 rounded-full border px-3 py-2 text-xs font-medium ${data?.invite_mode?.enabled ? "border-amber-200 bg-amber-50 text-amber-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}>
               <span className="h-2 w-2 rounded-full bg-current" />
               {data?.invite_mode?.enabled ? "Invite-only active" : "Open registration active"}
             </div>
@@ -496,10 +499,10 @@ export default function AdminPage() {
             const value = data?.metrics?.[card.key] ?? 0;
 
             return (
-              <Card key={card.key}>
+              <Card key={card.key} className="rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">{card.label}</CardTitle>
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${card.bg}`}>
+                  <CardTitle className="text-sm font-medium text-slate-500">{card.label}</CardTitle>
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-2xl ${card.bg}`}>
                     <Icon className={`h-4 w-4 ${card.tone}`} />
                   </div>
                 </CardHeader>
@@ -507,8 +510,9 @@ export default function AdminPage() {
                   {loading ? (
                     <Skeleton className="mt-1 h-8 w-24" />
                   ) : (
-                    <div className="text-2xl font-bold">{card.format(value)}</div>
+                    <div className="text-2xl font-semibold tracking-tight text-slate-950">{card.format(value)}</div>
                   )}
+                  <p className="mt-1 text-xs text-slate-500">{card.label}</p>
                 </CardContent>
               </Card>
             );
@@ -516,7 +520,7 @@ export default function AdminPage() {
         </div>
 
         <div className="grid items-start gap-4 lg:grid-cols-3">
-          <Card className="lg:col-span-2">
+          <Card className="rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] lg:col-span-2">
             <CardHeader>
               <CardTitle>Health Checks</CardTitle>
             </CardHeader>
@@ -525,10 +529,10 @@ export default function AdminPage() {
                 Array.from({ length: 5 }).map((_, index) => <Skeleton key={index} className="h-14 rounded-xl" />)
               ) : healthChecks.length > 0 ? (
                 healthChecks.map(([name, check]) => (
-                  <div key={name} className="flex items-start justify-between rounded-xl border border-border bg-secondary/20 p-4">
+                  <div key={name} className="flex items-start justify-between rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
                     <div>
-                      <p className="font-medium capitalize">{name.replace(/_/g, " ")}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">{check.message}</p>
+                      <p className="font-medium capitalize text-slate-950">{name.replace(/_/g, " ")}</p>
+                      <p className="mt-1 text-sm text-slate-500">{check.message}</p>
                     </div>
                     <span className={`rounded-full border px-2.5 py-1 text-xs font-medium ${statusClass(check.status)}`}>
                       {check.status}
@@ -542,7 +546,7 @@ export default function AdminPage() {
           </Card>
 
           <div className="space-y-4">
-            <Card>
+            <Card className="rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
               <CardHeader>
                 <CardTitle>Plan Breakdown</CardTitle>
               </CardHeader>
@@ -551,15 +555,15 @@ export default function AdminPage() {
                   Array.from({ length: 3 }).map((_, index) => <Skeleton key={index} className="h-20 rounded-xl" />)
                 ) : data?.plan_breakdown?.length ? (
                   data.plan_breakdown.map((plan) => (
-                    <div key={plan.code} className="rounded-xl border border-border bg-secondary/20 p-4">
+                    <div key={plan.code} className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium">{plan.name}</p>
-                          <p className="text-xs text-muted-foreground">{plan.code}</p>
+                          <p className="font-medium text-slate-950">{plan.name}</p>
+                          <p className="text-xs text-slate-500">{plan.code}</p>
                         </div>
-                        <span className="text-xs text-muted-foreground">{plan.active_subscriptions} active</span>
+                        <span className="text-xs text-slate-500">{plan.active_subscriptions} active</span>
                       </div>
-                      <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                      <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-slate-500">
                         <span>Monthly: ₦{plan.monthly_price_ngn.toLocaleString()}</span>
                         <span>Annual: ₦{plan.annual_price_ngn.toLocaleString()}</span>
                         <span>Cancelled: {plan.cancelled_subscriptions}</span>
@@ -573,22 +577,22 @@ export default function AdminPage() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
               <CardHeader>
                 <CardTitle>Launch Access</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-slate-600">
                   {data?.invite_mode?.enabled
                     ? "Invite-only mode is active. Approved waitlist leads can create accounts."
                     : "Open registration is active. Anyone can create an account again."}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-500">
                   Source: {data?.invite_mode?.source ?? "loading"} · Updated: {formatDate(data?.invite_mode?.updated_at)}
                 </p>
                 <Link
                   href="/admin/security-operations"
-                  className="inline-flex items-center rounded-full border border-white/10 px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+                  className="inline-flex items-center rounded-full border border-emerald-200 px-3 py-2 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-50 hover:text-emerald-800"
                 >
                   Open Security Operations
                 </Link>
@@ -598,25 +602,25 @@ export default function AdminPage() {
         </div>
 
         <div className="grid items-start gap-4 xl:grid-cols-6">
-          <Card className="xl:col-span-2">
+          <Card className="rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] xl:col-span-2">
             <CardHeader>
               <CardTitle>Recent Users</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="rounded-xl border border-border bg-secondary/10 p-3">
+              <div className="rounded-xl border border-emerald-100 bg-emerald-50/30 p-3">
                 <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                   <div className="md:max-w-[10rem]">
                     <label htmlFor="support-note" className="text-[11px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
                       Support note
                     </label>
-                    <p className="mt-2 text-xs leading-6 text-muted-foreground">
+                    <p className="mt-2 text-xs leading-6 text-slate-500">
                       Optional note saved to the support audit trail before impersonation.
                     </p>
                   </div>
                   <textarea
                     id="support-note"
                     rows={2}
-                    className="min-h-[92px] w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary"
+                    className="min-h-[92px] w-full rounded-xl border border-emerald-100 bg-white px-3 py-2 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-emerald-400"
                     placeholder="Why are we viewing this account?"
                     value={supportNote}
                     onChange={(e) => setSupportNote(e.target.value)}
@@ -627,15 +631,15 @@ export default function AdminPage() {
                 Array.from({ length: 5 }).map((_, index) => <Skeleton key={index} className="h-16 rounded-xl" />)
               ) : data?.recent_users?.length ? (
                 data.recent_users.map((entry) => (
-                  <div key={entry.id} className="flex items-start justify-between rounded-xl border border-border bg-secondary/20 p-4">
+                  <div key={entry.id} className="flex items-start justify-between rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
                     <div>
-                      <p className="font-medium">{entry.name}</p>
-                      <p className="text-xs text-muted-foreground">{entry.email}</p>
-                      <p className="mt-1 text-xs text-muted-foreground">Signed up: {formatDate(entry.created_at)}</p>
+                      <p className="font-medium text-slate-950">{entry.name}</p>
+                      <p className="text-xs text-slate-500">{entry.email}</p>
+                      <p className="mt-1 text-xs text-slate-500">Signed up: {formatDate(entry.created_at)}</p>
                     </div>
                     <div className="text-right space-y-2">
-                      <span className="rounded-full border border-white/10 px-2.5 py-1 text-xs capitalize text-muted-foreground">{entry.role.replace("_", " ")}</span>
-                      <p className="mt-2 text-xs text-muted-foreground">Trial ends {formatDate(entry.trial_ends_at)}</p>
+                      <span className="rounded-full border border-emerald-100 px-2.5 py-1 text-xs capitalize text-slate-500">{entry.role.replace("_", " ")}</span>
+                      <p className="mt-2 text-xs text-slate-500">Trial ends {formatDate(entry.trial_ends_at)}</p>
                       {entry.role === "owner" && (
                         <Button
                           type="button"
@@ -657,7 +661,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card className="xl:col-span-1">
+          <Card className="rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] xl:col-span-1">
             <CardHeader>
               <CardTitle>Recent Clients</CardTitle>
             </CardHeader>
@@ -666,11 +670,11 @@ export default function AdminPage() {
                 Array.from({ length: 5 }).map((_, index) => <Skeleton key={index} className="h-16 rounded-xl" />)
               ) : data?.recent_clients?.length ? (
                 data.recent_clients.map((client) => (
-                  <div key={client.id} className="rounded-xl border border-border bg-secondary/20 p-4">
+                    <div key={client.id} className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="font-medium">{client.name}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-slate-500">
                           {client.company ?? "No company"} · {client.email ?? "No email"}
                         </p>
                       </div>
@@ -678,7 +682,7 @@ export default function AdminPage() {
                         {client.status}
                       </span>
                     </div>
-                    <p className="mt-2 text-xs text-muted-foreground">
+                    <p className="mt-2 text-xs text-slate-500">
                       Owner: {client.owner_name ?? "Unknown"} {client.owner_email ? `(${client.owner_email})` : ""} · {formatDate(client.created_at)}
                     </p>
                   </div>
@@ -689,7 +693,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card className="xl:col-span-1">
+          <Card className="rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] xl:col-span-1">
             <CardHeader>
               <CardTitle>Recent Payments</CardTitle>
             </CardHeader>
@@ -698,11 +702,11 @@ export default function AdminPage() {
                 Array.from({ length: 5 }).map((_, index) => <Skeleton key={index} className="h-16 rounded-xl" />)
               ) : data?.recent_payments?.length ? (
                 data.recent_payments.map((payment) => (
-                  <div key={payment.id} className="rounded-xl border border-border bg-secondary/20 p-4">
+                    <div key={payment.id} className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="font-medium">{payment.reference ?? `Payment #${payment.id}`}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-slate-500">
                           {payment.user_name ?? "Unknown user"} · {payment.invoice_number ?? "No invoice"}
                         </p>
                       </div>
@@ -710,7 +714,7 @@ export default function AdminPage() {
                         {payment.status}
                       </span>
                     </div>
-                    <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
+                    <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
                       <span>{payment.gateway ?? "Gateway"}</span>
                       <span>₦{payment.amount.toLocaleString("en-NG", { minimumFractionDigits: 2 })}</span>
                     </div>
@@ -722,7 +726,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card className="xl:col-span-2">
+          <Card className="rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] xl:col-span-2">
             <CardHeader>
               <CardTitle>Waitlist Signups</CardTitle>
             </CardHeader>
@@ -731,7 +735,7 @@ export default function AdminPage() {
                 Array.from({ length: 5 }).map((_, index) => <Skeleton key={index} className="h-16 rounded-xl" />)
               ) : data?.recent_waitlist_signups?.length ? (
                 data.recent_waitlist_signups.map((signup) => (
-                  <div key={signup.id} className="rounded-xl border border-border bg-secondary/20 p-4">
+                    <div key={signup.id} className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="font-medium">{signup.name ?? "Unnamed lead"}</p>
@@ -741,15 +745,15 @@ export default function AdminPage() {
                         <span className={`rounded-full border px-2.5 py-1 text-xs font-medium ${statusClass(signup.status)}`}>
                           {signup.status}
                         </span>
-                        <span className="rounded-full border border-white/10 px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                        <span className="rounded-full border border-emerald-100 px-2.5 py-1 text-xs font-medium text-slate-500">
                           {signup.source ?? "homepage"}
                         </span>
                       </div>
                     </div>
-                    <p className="mt-2 text-xs text-muted-foreground">
+                    <p className="mt-2 text-xs text-slate-500">
                       {signup.ip_address ?? "Unknown IP"} · {formatDate(signup.created_at)}
                     </p>
-                    <p className="mt-1 text-xs text-muted-foreground">
+                    <p className="mt-1 text-xs text-slate-500">
                       {signup.approved_by_name ? `Approved by ${signup.approved_by_name}` : "Not yet approved"}
                     </p>
                     <div className="mt-3 flex flex-wrap gap-2">
@@ -790,7 +794,7 @@ export default function AdminPage() {
         </div>
 
         <div className="grid items-start gap-4 lg:grid-cols-4">
-          <Card className="self-start">
+          <Card className="rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] self-start">
             <CardHeader>
               <CardTitle>Recent Support Sessions</CardTitle>
             </CardHeader>
@@ -799,11 +803,11 @@ export default function AdminPage() {
                 Array.from({ length: 5 }).map((_, index) => <Skeleton key={index} className="h-16 rounded-xl" />)
               ) : data?.recent_support_sessions?.length ? (
                 data.recent_support_sessions.map((event) => (
-                  <div key={event.id} className="rounded-xl border border-border bg-secondary/20 p-4">
+                    <div key={event.id} className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="font-medium capitalize">{event.action}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-slate-500">
                           {event.impersonator_name ?? "Unknown admin"} → {event.target_name ?? "Unknown user"}
                         </p>
                       </div>
@@ -811,7 +815,7 @@ export default function AdminPage() {
                         {event.action}
                       </span>
                     </div>
-                    <p className="mt-2 text-xs text-muted-foreground">
+                    <p className="mt-2 text-xs text-slate-500">
                       {event.note ?? "No note provided"} · {event.ip_address ?? "No IP"} · {formatDate(event.occurred_at)}
                     </p>
                   </div>
@@ -822,7 +826,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card className="self-start">
+          <Card className="rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] self-start">
             <CardHeader>
               <CardTitle>Recent Operations</CardTitle>
             </CardHeader>
@@ -863,11 +867,11 @@ export default function AdminPage() {
                 Array.from({ length: 5 }).map((_, index) => <Skeleton key={index} className="h-16 rounded-xl" />)
               ) : data?.recent_issues?.length ? (
                 data.recent_issues.map((issue) => (
-                  <div key={issue.id} className="rounded-xl border border-border bg-secondary/20 p-4">
+                    <div key={issue.id} className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="font-medium">{issue.title}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-slate-500">
                           {issue.user_name ?? "Unknown user"} · {issue.category}
                         </p>
                       </div>
@@ -875,7 +879,7 @@ export default function AdminPage() {
                         {issue.status}
                       </span>
                     </div>
-                    <p className="mt-2 text-xs text-muted-foreground">
+                    <p className="mt-2 text-xs text-slate-500">
                       Priority: {issue.priority} · {formatDate(issue.created_at)}
                     </p>
                   </div>
@@ -886,7 +890,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card className="self-start">
+          <Card className="rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] self-start">
             <CardHeader>
               <CardTitle>Security Signals</CardTitle>
             </CardHeader>
@@ -895,11 +899,11 @@ export default function AdminPage() {
                 Array.from({ length: 5 }).map((_, index) => <Skeleton key={index} className="h-16 rounded-xl" />)
               ) : data?.recent_security_incidents?.length ? (
                 data.recent_security_incidents.map((incident) => (
-                  <div key={incident.id} className="rounded-xl border border-border bg-secondary/20 p-4">
+                    <div key={incident.id} className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="font-medium">{incident.type}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-slate-500">
                           {incident.method ?? "N/A"} · {incident.path ?? "Unknown path"}
                         </p>
                       </div>
@@ -907,7 +911,7 @@ export default function AdminPage() {
                         {incident.severity}
                       </span>
                     </div>
-                    <p className="mt-2 text-xs text-muted-foreground">
+                    <p className="mt-2 text-xs text-slate-500">
                       Identity: {incident.identity_key ?? "—"} · {formatDate(incident.created_at)}
                     </p>
                   </div>
@@ -919,7 +923,7 @@ export default function AdminPage() {
           </Card>
         </div>
 
-          <Card className="self-start">
+          <Card className="rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] self-start">
             <CardHeader>
               <CardTitle>Recent Errors (7d)</CardTitle>
             </CardHeader>
@@ -928,17 +932,17 @@ export default function AdminPage() {
               Array.from({ length: 5 }).map((_, index) => <Skeleton key={index} className="h-16 rounded-xl" />)
             ) : data?.recent_errors?.length ? (
               data.recent_errors.map((error) => (
-                <div key={error.id} className="rounded-xl border border-border bg-secondary/20 p-4">
+                <div key={error.id} className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="font-medium">{error.message}</p>
-                      <p className="text-xs text-muted-foreground">{error.source} · {error.path ?? "Unknown path"}</p>
+                      <p className="text-xs text-slate-500">{error.source} · {error.path ?? "Unknown path"}</p>
                     </div>
                     <span className={`rounded-full border px-2.5 py-1 text-xs font-medium ${statusClass(error.level)}`}>
                       {error.level}
                     </span>
                   </div>
-                  <p className="mt-2 text-xs text-muted-foreground">{formatDate(error.created_at)}</p>
+                  <p className="mt-2 text-xs text-slate-500">{formatDate(error.created_at)}</p>
                 </div>
               ))
             ) : (

@@ -103,13 +103,14 @@ export default function ProposalsPage() {
   return (
     <AppShell>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-emerald-100 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.04)] lg:flex-row lg:items-end lg:justify-between">
           <div className="flex flex-col space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight">Proposals</h1>
-            <p className="text-muted-foreground text-sm">Manage your client proposals and estimates.</p>
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">Proposals</p>
+            <h1 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">Manage your client proposals and estimates.</h1>
+            <p className="text-sm text-slate-600">Keep drafts, approvals, and PDF exports in one readable workspace.</p>
           </div>
           <Link href="/proposals/create">
-            <Button size="sm">
+            <Button size="sm" className="rounded-full bg-emerald-600 text-white hover:bg-emerald-500">
               <Plus className="w-4 h-4 mr-2" />
               Create Proposal
             </Button>
@@ -117,28 +118,28 @@ export default function ProposalsPage() {
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center p-8">Loading proposals...</div>
+          <div className="rounded-[1.5rem] border border-emerald-100 bg-white p-8 text-center text-slate-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">Loading proposals...</div>
         ) : proposals.length === 0 ? (
-          <div className="text-center p-8 text-muted-foreground border rounded-lg border-dashed">
+          <div className="rounded-[1.5rem] border border-dashed border-emerald-100 bg-white p-8 text-center text-slate-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
             No proposals found. Create one to get started.
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {proposals.map((proposal) => (
-              <Card key={proposal.id} className="relative overflow-hidden group hover:shadow-md transition-shadow">
+              <Card key={proposal.id} className="group relative overflow-hidden rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] transition-shadow hover:shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center space-x-2">
-                      <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-muted-foreground" />
+                      <div className="w-10 h-10 rounded-2xl bg-emerald-50 flex items-center justify-center">
+                        <FileText className="w-5 h-5 text-emerald-700" />
                       </div>
                       <div>
-                        <CardTitle className="text-lg">{proposal.title}</CardTitle>
-                        <p className="text-sm text-muted-foreground">{proposal.client.name}</p>
+                        <CardTitle className="text-lg text-slate-950">{proposal.title}</CardTitle>
+                        <p className="text-sm text-slate-500">{proposal.client.name}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => void deleteProposal(proposal.id)}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:bg-emerald-50 hover:text-emerald-700" onClick={() => void deleteProposal(proposal.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -146,22 +147,22 @@ export default function ProposalsPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex justify-between items-center mt-4">
-                    <div className="flex items-center text-sm font-medium">
+                    <div className="flex items-center text-sm font-medium text-slate-700">
                       {getStatusIcon(proposal.status)}
                       {proposal.status}
                     </div>
-                    <div className="font-bold text-lg">
+                    <div className="text-lg font-semibold tracking-tight text-slate-950">
                       ${Number(proposal.total).toLocaleString()}
                     </div>
                   </div>
-                  <div className="mt-4 pt-4 border-t border-border flex justify-between items-center">
-                    <span className="text-xs text-muted-foreground">Issued: {new Date(proposal.issue_date).toLocaleDateString()}</span>
+                  <div className="mt-4 flex items-center justify-between border-t border-emerald-100 pt-4">
+                    <span className="text-xs text-slate-500">Issued: {new Date(proposal.issue_date).toLocaleDateString()}</span>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" onClick={() => void convertToContract(proposal.id)}>
+                      <Button variant="outline" size="sm" onClick={() => void convertToContract(proposal.id)} className="rounded-full border-emerald-200 bg-white hover:bg-emerald-50">
                         <FileUp className="w-4 h-4 mr-2" />
                         Contract
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => downloadPdf(proposal.id)}>
+                      <Button variant="outline" size="sm" onClick={() => downloadPdf(proposal.id)} className="rounded-full border-emerald-200 bg-white hover:bg-emerald-50">
                         <Download className="w-4 h-4 mr-2" />
                         PDF
                       </Button>

@@ -60,17 +60,17 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-dvh w-full bg-[#eef1f6] text-slate-950 overflow-hidden">
+    <div className="flex min-h-dvh w-full bg-[#eef1f6] text-slate-950">
       {/* Desktop Side Navigation */}
-      <aside className="hidden md:flex flex-col w-64 shrink-0 border-r border-slate-200/80 bg-white/90 backdrop-blur-xl">
+      <aside className="fixed inset-y-0 left-0 hidden w-64 shrink-0 border-r border-emerald-100 bg-white/95 backdrop-blur-xl md:flex">
         <SideNav />
       </aside>
 
       {/* Main Content Area */}
-      <main className="relative flex min-w-0 flex-1 flex-col overflow-y-auto pb-20 md:pb-0">
+      <main className="relative flex min-w-0 flex-1 flex-col pb-20 md:pb-0 md:pl-64">
         {/* Top bar — desktop only */}
         <header className="sticky top-0 z-20 hidden md:block">
-          <div className="border-b border-slate-200/80 bg-[#eef1f6]/90 px-6 py-4 backdrop-blur-xl">
+          <div className="border-b border-emerald-100 bg-[#eef1f6]/90 px-6 py-4 backdrop-blur-xl">
             <div className="flex items-center justify-end gap-3">
               <NotificationBell />
             </div>
@@ -78,7 +78,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </header>
 
         <div className="mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-4 py-4 md:px-6 md:py-6 lg:px-8">
-          <div className="rounded-[2rem] border border-slate-200/80 bg-white shadow-[0_18px_60px_rgba(15,23,42,0.08)] overflow-hidden">
+          <div className="overflow-hidden rounded-[2rem] border border-emerald-100 bg-white shadow-[0_18px_60px_rgba(15,23,42,0.08)]">
             <div className="px-4 py-4 md:px-6 md:py-6">
           {isImpersonating && user && (
             <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-950 md:flex-row md:items-center md:justify-between">

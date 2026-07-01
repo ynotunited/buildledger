@@ -45,7 +45,7 @@ export default function ProjectsPage() {
   return (
     <AppShell>
       <div className="space-y-6">
-        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.04)] lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-emerald-100 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.04)] lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">Projects</p>
             <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
@@ -56,7 +56,7 @@ export default function ProjectsPage() {
             </p>
           </div>
           <Link href="/projects/create">
-            <Button size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800">
+            <Button size="sm" className="rounded-full bg-emerald-600 text-white hover:bg-emerald-500">
               <Plus className="mr-2 h-4 w-4" />
               New project
             </Button>
@@ -66,11 +66,11 @@ export default function ProjectsPage() {
         {loading ? (
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-48 rounded-[1.5rem] bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] animate-pulse" />
+              <div key={i} className="h-48 rounded-[1.5rem] border border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] animate-pulse" />
             ))}
           </div>
         ) : projects.length === 0 ? (
-          <div className="rounded-[1.5rem] border border-dashed border-slate-200 bg-white p-12 text-center text-slate-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
+          <div className="rounded-[1.5rem] border border-dashed border-emerald-100 bg-white p-12 text-center text-slate-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
             <Briefcase className="mx-auto mb-3 h-10 w-10 opacity-30" />
             <p className="font-medium">No projects yet</p>
             <p className="text-sm mt-1">Create a project to start tracking work.</p>
@@ -79,11 +79,11 @@ export default function ProjectsPage() {
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {projects.map((project) => (
               <Link key={project.id} href={`/projects/${project.id}`}>
-                <Card className="h-full cursor-pointer rounded-[1.5rem] border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] transition-shadow hover:shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+                <Card className="h-full cursor-pointer rounded-[1.5rem] border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)] transition-shadow hover:shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
                   <CardHeader className="pb-3">
                     <div className="flex justify-between items-start">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100">
-                        <Briefcase className="h-5 w-5 text-slate-500" />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-50">
+                        <Briefcase className="h-5 w-5 text-emerald-700" />
                       </div>
                       <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${STATUS_COLORS[project.status] ?? "bg-slate-100 text-slate-600"}`}>
                         {project.status}

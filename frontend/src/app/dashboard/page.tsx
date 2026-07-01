@@ -63,10 +63,10 @@ const METRIC_CARDS = [
 ];
 
 const QUICK_ACTIONS = [
-  { label: "New Proposal",  href: "/proposals/create",  color: "bg-slate-950 text-white hover:bg-slate-800" },
-  { label: "New Project",   href: "/projects/create",   color: "bg-slate-100 text-slate-950 hover:bg-slate-200" },
-  { label: "Record Payment",href: "/payments/record",   color: "bg-slate-100 text-slate-950 hover:bg-slate-200" },
-  { label: "Add Client",    href: "/clients",            color: "bg-slate-100 text-slate-950 hover:bg-slate-200" },
+  { label: "New Proposal",  href: "/proposals/create",  color: "bg-emerald-600 text-white hover:bg-emerald-500" },
+  { label: "New Project",   href: "/projects/create",   color: "bg-emerald-50 text-emerald-700 hover:bg-emerald-100" },
+  { label: "Record Payment",href: "/payments/record",   color: "bg-emerald-50 text-emerald-700 hover:bg-emerald-100" },
+  { label: "Add Client",    href: "/clients",            color: "bg-emerald-50 text-emerald-700 hover:bg-emerald-100" },
 ];
 
 export default function DashboardPage() {
@@ -139,14 +139,14 @@ export default function DashboardPage() {
           <div className="flex flex-wrap gap-2">
             <Link
               href="/invoices/create"
-              className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-4 py-2.5 text-sm font-medium text-white transition-transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition-transform hover:-translate-y-0.5 hover:bg-emerald-500"
             >
               <Plus className="h-4 w-4" />
               Create invoice
             </Link>
             <Link
               href="/payments/record"
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 transition-colors hover:bg-slate-50"
+              className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-4 py-2.5 text-sm font-medium text-emerald-700 transition-colors hover:bg-emerald-50"
             >
               Reconcile transaction
             </Link>
@@ -193,7 +193,7 @@ export default function DashboardPage() {
             </div>
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100"
+              className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700 transition-colors hover:bg-emerald-100"
             >
               <RefreshCw className="h-4 w-4" />
               Refresh

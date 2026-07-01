@@ -139,7 +139,7 @@ export default function ClientsPage() {
                 : "Manage your leads and active clients."}
             </p>
           </div>
-          <Button size="sm" onClick={resetForm} className="rounded-full bg-slate-950 px-4 text-white hover:bg-slate-800">
+          <Button size="sm" onClick={resetForm} className="rounded-full bg-emerald-600 px-4 text-white hover:bg-emerald-500">
             <Plus className="mr-2 h-4 w-4" />
             {editingId ? "New client" : "Add client"}
           </Button>
@@ -152,23 +152,23 @@ export default function ClientsPage() {
           <CardContent className="p-5 md:p-6">
             <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name" className="text-slate-700">Name</Label>
                 <Input id="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="company">Company</Label>
+                <Label htmlFor="company" className="text-slate-700">Company</Label>
                 <Input id="company" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-slate-700">Email</Label>
                 <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone</Label>
+                <Label htmlFor="phone" className="text-slate-700">Phone</Label>
                 <Input id="phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status" className="text-slate-700">Status</Label>
                 <select
                   id="status"
                   value={form.status}
@@ -181,7 +181,7 @@ export default function ClientsPage() {
                 </select>
               </div>
               <div className="md:col-span-2 flex gap-3">
-                <Button type="submit" disabled={saving} className="rounded-full bg-slate-950 text-white hover:bg-slate-800">
+                <Button type="submit" disabled={saving} className="rounded-full bg-emerald-600 text-white hover:bg-emerald-500">
                   {saving ? "Saving..." : editingId ? "Update client" : "Create client"}
                 </Button>
                 {editingId && (
