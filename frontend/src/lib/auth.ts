@@ -22,7 +22,7 @@ export function clearAuthToken() {
 }
 
 export function getDefaultDashboardPath(role?: AuthUser["role"] | null): string {
-  return role === "admin" ? "/admin" : "/dashboard";
+  return "/dashboard";
 }
 
 export function getPostLoginRedirect(search: string, role?: AuthUser["role"] | null): string {

@@ -62,12 +62,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-dvh w-full bg-[#eef1f6] text-slate-950">
       {/* Desktop Side Navigation */}
-      <aside className="fixed inset-y-0 left-0 hidden w-64 shrink-0 border-r border-emerald-100 bg-white/95 backdrop-blur-xl md:flex">
+      <aside className="fixed inset-y-0 left-0 hidden z-30 w-64 shrink-0 border-r border-emerald-100 bg-white/95 backdrop-blur-xl md:flex pointer-events-auto">
         <SideNav />
       </aside>
 
       {/* Main Content Area */}
-      <main className="relative flex min-w-0 flex-1 flex-col pb-20 md:pb-0 md:pl-64">
+      <main className="relative z-0 flex min-w-0 flex-1 flex-col pb-20 md:pb-0 md:pl-64">
         {/* Top bar — desktop only */}
         <header className="sticky top-0 z-20 hidden md:block">
           <div className="border-b border-emerald-100 bg-[#eef1f6]/90 px-6 py-4 backdrop-blur-xl">
