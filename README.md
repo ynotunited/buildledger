@@ -10,6 +10,19 @@
 
 BuildLedger is a client-work operating system for agencies, freelancers, and digital teams. It combines proposals, contracts, invoices, payments, projects, billing, waitlist onboarding, and an admin console into one platform.
 
+## 🚀 Key Highlights
+
+- Multi-tenant SaaS architecture
+- Secure authentication and role-based access control
+- Proposal, contract, invoice, and payment workflows
+- Subscription billing with monthly and annual plans
+- Admin dashboard with operational tools
+- Public invoice payment links and digital contract signing
+- RESTful API powered by Laravel
+- Modern frontend built with Next.js and TypeScript
+- Production-ready deployment using Docker and Nginx
+- Security-first design with audit logs and rate limiting
+
 ## What’s inside
 
 - `backend/` - Laravel API, admin controls, billing, payments, notifications, and audit logging.
