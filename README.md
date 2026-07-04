@@ -8,8 +8,10 @@
 ![Status](https://img.shields.io/badge/Status-Active-success)
 ![License](https://img.shields.io/badge/License-Private-red)
 
-A modern multi-tenant SaaS platform that helps agencies, freelancers, and service businesses manage proposals, contracts, invoices, payments, projects, and client relationships from a single dashboard.
-Built with **Laravel**, **Next.js**, **TypeScript**, **MySQL**, **Docker**, and **Nginx**, following modern SaaS architecture and production deployment practices.
+A production-grade multi-tenant SaaS platform for managing proposals, contracts, invoices, payments, and client workflows.
+
+Built for agencies, freelancers, and service-based businesses that need a unified system to run their operations.
+Built with Laravel, Next.js, TypeScript, MySQL, Docker, and Nginx. Designed with scalable SaaS architecture, secure authentication, and production deployment practices.
 
 ## 📖 Overview
 
