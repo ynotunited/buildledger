@@ -1,5 +1,13 @@
 # BuildLedger
 
+![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-15-000000?logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8-4479A1?logo=mysql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?logo=docker&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Active-success)
+![License](https://img.shields.io/badge/License-Private-red)
+
 BuildLedger is a client-work operating system for agencies, freelancers, and digital teams. It combines proposals, contracts, invoices, payments, projects, billing, waitlist onboarding, and an admin console into one platform.
 
 ## What’s inside
