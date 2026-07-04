@@ -80,6 +80,57 @@ A RESTful API structure ensures:
 
 ---
 
+## 🔄 System Flow (How BuildLedger Works)
+
+BuildLedger follows a complete end-to-end business workflow system:
+
+### 1. Client Onboarding
+- A client is invited or signs up via waitlist approval
+- Admin approves and assigns tenant workspace access
+- Role-based access is initialized (Admin / Client / Staff)
+
+---
+
+### 2. Proposal Creation
+- Admin or team creates a proposal for a client
+- Proposal is sent for review and approval
+- Client can accept or request modifications
+
+---
+
+### 3. Contract Generation
+- Once a proposal is accepted, a contract is generated
+- Client digitally signs the contract via secure link
+- Contract status is tracked in the system
+
+---
+
+### 4. Invoice & Billing
+- Approved contracts trigger invoice creation
+- Clients receive payment links for invoices
+- System tracks payment status in real-time
+
+---
+
+### 5. Payment Processing
+- Payments are processed via integrated payment gateway
+- Transactions are recorded with idempotency checks
+- Ledger system updates financial records automatically
+
+---
+
+### 6. Project Execution
+- Once payment is confirmed, a project is created
+- Tasks and milestones are tracked within the dashboard
+- Progress is visible to both client and admin
+
+---
+
+### 7. Admin Operations
+- Admin dashboard provides full system visibility
+- Includes user management, billing overview, and audit logs
+- System health and activity tracking included
+
 ### Why MySQL
 MySQL was selected for its reliability, relational integrity, and strong support for structured business data such as invoices, contracts, and payments.
 
