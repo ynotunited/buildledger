@@ -59,6 +59,48 @@ BuildLedger is designed using a modern decoupled SaaS architecture:
 
 ---
 
+## 🧠 Engineering Decisions
+
+### Why Laravel + Next.js
+Laravel was chosen for its strong backend ecosystem, mature authentication system, and rapid API development capabilities.  
+Next.js was used to deliver a fast, scalable, and modern frontend experience with server-side rendering where needed.
+
+---
+
+### Why Multi-Tenancy
+A multi-tenant architecture was implemented to allow multiple organizations to operate independently within the same system while maintaining strict data isolation and scalability.
+
+---
+
+### Why REST API Design
+A RESTful API structure ensures:
+- Clear separation between frontend and backend
+- Easier scalability across multiple clients (web, mobile, integrations)
+- Maintainable and testable backend services
+
+---
+
+### Why MySQL
+MySQL was selected for its reliability, relational integrity, and strong support for structured business data such as invoices, contracts, and payments.
+
+---
+
+### Why Docker
+Docker ensures:
+- Consistent development and production environments
+- Simplified deployment across servers
+- Isolation of services for backend and frontend
+
+---
+
+### Deployment Strategy
+The system is deployed on a VPS using Nginx as a reverse proxy, with Git-based updates pushed from the main branch to production.
+
+This allows:
+- Fast iteration
+- Controlled deployments
+- Simple rollback strategy if needed
+
 ## 🔐 Multi-Tenancy Model
 
 BuildLedger uses a tenant-isolated architecture where:
