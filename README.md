@@ -30,14 +30,14 @@ From the first proposal to the final payment, the platform provides tools for cl
 - Production-ready deployment using Docker and Nginx
 - Security-first design with audit logs and rate limiting
 
-## What’s inside
+## 📂 Project Structure
 
 - `backend/` - Laravel API, admin controls, billing, payments, notifications, and audit logging.
 - `frontend/` - Next.js app for the customer dashboard, marketing site, and admin UI.
 - `docs/` - Product, deployment, security, and operations notes.
 - `ops/` - Nginx and deployment templates.
 
-## Core features
+## ✨ Core Features
 
 - Invite-only onboarding and waitlist approvals
 - Admin dashboard with support and operational tooling
@@ -46,7 +46,7 @@ From the first proposal to the final payment, the platform provides tools for cl
 - Subscription billing with monthly and annual plans
 - Security controls for rate limiting, audit logs, and abuse detection
 
-## Local development
+## 💻 Local Development
 
 Run the backend and frontend separately:
 
@@ -68,7 +68,7 @@ Local URLs:
 
 For a full step-by-step localhost walkthrough, see [docs/LOCALHOST_GUIDE.md](docs/LOCALHOST_GUIDE.md).
 
-## Environment setup
+## ⚙️ Environment Setup
 
 Each app uses its own `.env` file.
 
@@ -81,7 +81,7 @@ For production-ready defaults, see:
 - `frontend/production.env.example`
 - `docs/PRODUCTION_ENV_CHECKLIST.md`
 
-## Testing
+## 🧪 Testing
 
 Backend:
 
@@ -98,7 +98,7 @@ npm run lint
 npm run build
 ```
 
-## Deployment
+## 🚀 Deployment
 
 The current deployment plan is:
 
@@ -108,7 +108,7 @@ The current deployment plan is:
 
 If you use the VPS route, keep the app connected to `main` on GitHub and deploy from the server after pushing updates.
 
-## Security and operations
+## 🔒 Security & Operations
 
 BuildLedger includes:
 
@@ -125,6 +125,6 @@ For details, see:
 - `docs/SECRETS_AUDIT.md`
 - `docs/OBSERVABILITY_SETUP.md`
 
-## License
+## 📄 License
 
 Internal project for MadeItCodes / BuildLedger.
