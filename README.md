@@ -25,6 +25,27 @@ Freelancers, agencies, and service businesses often rely on multiple disconnecte
 
 BuildLedger was created to unify these workflows into a single platform that improves operational efficiency, reduces manual work, and provides better visibility across the entire client lifecycle.
 
+## ⚙️ Tech Stack
+
+**Backend**
+- Laravel (PHP)
+- REST API Architecture
+- MySQL
+
+**Frontend**
+- Next.js
+- TypeScript
+- Modern React UI
+
+**Infrastructure**
+- Docker
+- Nginx
+- VPS Deployment
+
+**Integrations**
+- Payment Gateway (Paystack/Flutterwave)
+- Email & Notifications
+
 ## 🚀 Production Status
 
 - Live SaaS system deployed on VPS
