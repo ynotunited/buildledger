@@ -98,6 +98,29 @@ BuildLedger follows a complete end-to-end business workflow system:
 
 ---
 
+## 💼 Business Impact
+
+BuildLedger replaces the need for multiple disconnected tools by combining core business operations into a single platform.
+
+Instead of using separate tools for:
+- Proposals (Google Docs / Notion)
+- Contracts (DocuSign alternatives)
+- Invoicing (QuickBooks / Stripe Invoicing)
+- Project tracking (Trello / Asana)
+- Payment tracking (manual spreadsheets)
+
+BuildLedger centralizes everything into one system.
+
+---
+
+## 🎯 Key Value Delivered
+
+- Reduces operational overhead for service businesses
+- Improves payment tracking and cash flow visibility
+- Eliminates tool fragmentation across teams
+- Automates client lifecycle workflows
+- Provides a single source of truth for business operations
+
 ### 3. Contract Generation
 - Once a proposal is accepted, a contract is generated
 - Client digitally signs the contract via secure link
