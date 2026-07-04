@@ -272,7 +272,7 @@ class DemoCompanySeeder extends Seeder
                     'invoice_number' => $spec['number'],
                     'status' => $spec['status'],
                     'sent_at' => in_array($spec['status'], ['Sent', 'Paid', 'Overdue'], true) ? now()->subDays(28 - $index) : null,
-                    'public_payment_token' => in_array($spec['status'], ['Sent', 'Overdue'], true) ? Str::random(40) : null,
+                    'public_payment_token' => in_array($spec['status'], ['Sent', 'Overdue'], true) ? (string) Str::uuid() : null,
                     'public_payment_token_expires_at' => in_array($spec['status'], ['Sent', 'Overdue'], true) ? now()->addDays(14 - ($index % 7)) : null,
                     'issue_date' => now()->subDays(45 - $index)->toDateString(),
                     'due_date' => now()->subDays($spec['status'] === 'Overdue' ? 8 : -14 + $index % 5)->toDateString(),
