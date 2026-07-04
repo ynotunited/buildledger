@@ -23,6 +23,15 @@ Freelancers, agencies, and service businesses often rely on multiple disconnecte
 
 BuildLedger was created to unify these workflows into a single platform that improves operational efficiency, reduces manual work, and provides better visibility across the entire client lifecycle.
 
+## 🚀 Production Status
+
+- Live SaaS system deployed on VPS
+- Multi-tenant architecture implemented
+- Authentication, roles, and permissions active
+- Payment and invoice workflows functional
+- Admin and client dashboards operational
+- CI-style deployment workflow via GitHub + VPS
+
 ## 🚀 Key Highlights
 
 - Multi-tenant SaaS architecture
