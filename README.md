@@ -9,13 +9,19 @@
 ![License](https://img.shields.io/badge/License-Private-red)
 
 A modern multi-tenant SaaS platform that helps agencies, freelancers, and service businesses manage proposals, contracts, invoices, payments, projects, and client relationships from a single dashboard.
-Built with **Laravel**, **Next.js**, **TypeScript**, **MySQL**, **Docker**, and **Nginx**.
+Built with **Laravel**, **Next.js**, **TypeScript**, **MySQL**, **Docker**, and **Nginx**, following modern SaaS architecture and production deployment practices.
 
 ## 📖 Overview
 
 BuildLedger is an all-in-one business operating system designed to simplify how service businesses manage their entire client lifecycle.
 
 From the first proposal to the final payment, the platform provides tools for client onboarding, contracts, invoicing, project management, payment tracking, subscription billing, and administrative operations within a secure, scalable architecture.
+
+## 💡 Why BuildLedger?
+
+Freelancers, agencies, and service businesses often rely on multiple disconnected tools to manage proposals, contracts, invoices, payments, and projects.
+
+BuildLedger was created to unify these workflows into a single platform that improves operational efficiency, reduces manual work, and provides better visibility across the entire client lifecycle.
 
 ## 🚀 Key Highlights
 
