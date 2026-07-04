@@ -15,6 +15,8 @@ class Company extends Model
         'address',
         'website',
         'tax_id',
+        'industry',
+        'currency',
         'logo_path',
         'logo_disk',
     ];

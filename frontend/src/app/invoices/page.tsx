@@ -19,6 +19,12 @@ interface Invoice {
   total: string;
 }
 
+const currencyFormatter = new Intl.NumberFormat("en-NG", {
+  style: "currency",
+  currency: "NGN",
+  maximumFractionDigits: 0,
+});
+
 export default function InvoicesPage() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
@@ -149,7 +155,7 @@ export default function InvoicesPage() {
                       {invoice.status}
                     </div>
                     <div className="text-lg font-semibold tracking-tight text-slate-950">
-                      ${Number(invoice.total).toLocaleString()}
+                      {currencyFormatter.format(Number(invoice.total))}
                     </div>
                   </div>
                   <div className="flex items-center justify-between border-t border-slate-100 pt-4">

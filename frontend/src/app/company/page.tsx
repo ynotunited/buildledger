@@ -13,6 +13,8 @@ type Company = {
   address: string | null;
   website: string | null;
   tax_id: string | null;
+  industry: string | null;
+  currency: string | null;
   logo_url: string | null;
 };
 
@@ -25,6 +27,8 @@ const EMPTY_COMPANY: Company = {
   address: "",
   website: "",
   tax_id: "",
+  industry: "",
+  currency: "NGN",
   logo_url: null,
 };
 
@@ -122,6 +126,8 @@ export default function CompanyPage() {
     formData.append("address", company.address ?? "");
     formData.append("website", company.website ?? "");
     formData.append("tax_id", company.tax_id ?? "");
+    formData.append("industry", company.industry ?? "");
+    formData.append("currency", company.currency ?? "NGN");
     formData.append("remove_logo", removeLogo ? "1" : "0");
 
     if (logoFile) {
@@ -276,6 +282,35 @@ export default function CompanyPage() {
                       placeholder="RC / VAT / TIN"
                     />
                     {errors.tax_id?.map((error) => (
+                      <p key={error} className="text-sm text-red-400">{error}</p>
+                    ))}
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="company-industry" className="text-sm font-medium text-foreground">Industry</label>
+                    <input
+                      id="company-industry"
+                      value={company.industry ?? ""}
+                      onChange={(event) => updateField("industry", event.target.value)}
+                      className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary"
+                      placeholder="Software Development & Digital Consulting"
+                    />
+                    {errors.industry?.map((error) => (
+                      <p key={error} className="text-sm text-red-400">{error}</p>
+                    ))}
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="company-currency" className="text-sm font-medium text-foreground">Currency</label>
+                    <input
+                      id="company-currency"
+                      value={company.currency ?? ""}
+                      onChange={(event) => updateField("currency", event.target.value.toUpperCase())}
+                      className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm uppercase outline-none transition-colors focus:border-primary"
+                      placeholder="NGN"
+                      maxLength={3}
+                    />
+                    {errors.currency?.map((error) => (
                       <p key={error} className="text-sm text-red-400">{error}</p>
                     ))}
                   </div>

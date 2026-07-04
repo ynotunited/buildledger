@@ -34,6 +34,8 @@ class CompanyController extends Controller
             'address' => 'nullable|string|max:2000',
             'website' => 'nullable|url:http,https|max:255',
             'tax_id' => 'nullable|string|max:255',
+            'industry' => 'nullable|string|max:255',
+            'currency' => ['nullable', 'string', 'size:3', 'regex:/^[A-Z]{3}$/'],
             'logo' => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp|extensions:jpg,jpeg,png,webp|max:4096',
             'remove_logo' => 'nullable|boolean',
         ]);
@@ -50,6 +52,8 @@ class CompanyController extends Controller
             'address' => InputSanitizer::multilineText($validated['address'] ?? null),
             'website' => isset($validated['website']) ? trim($validated['website']) : null,
             'tax_id' => InputSanitizer::text($validated['tax_id'] ?? null),
+            'industry' => InputSanitizer::text($validated['industry'] ?? null),
+            'currency' => isset($validated['currency']) ? strtoupper(trim($validated['currency'])) : null,
         ]);
 
         if (($validated['remove_logo'] ?? false) && $company->logo_path && $company->logo_disk) {

@@ -20,6 +20,12 @@ class BuildLedgerCredentialsSeeder extends Seeder
                 'role' => User::ROLE_ADMIN,
             ],
             [
+                'name' => 'Tony Olugbusi',
+                'email' => 'tony@madeitcodes.online',
+                'password' => 'TonyDemo123!',
+                'role' => User::ROLE_OWNER,
+            ],
+            [
                 'name' => 'BuildLedger Owner',
                 'email' => 'test.owner@buildledger.local',
                 'password' => 'BuildLedger123!',
