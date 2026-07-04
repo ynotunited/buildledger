@@ -14,6 +14,7 @@ use App\Models\Proposal;
 use App\Models\ProposalItem;
 use App\Models\User;
 use App\Support\PaymentLedger;
+use App\Support\RowLevelSecurity;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -25,7 +26,13 @@ class DemoCompanySeeder extends Seeder
 
     public function run(): void
     {
-        DB::transaction(function () {
+        RowLevelSecurity::runWithContext([
+            'app.user_id' => '1',
+            'app.user_role' => 'admin',
+            'app.access_mode' => 'authenticated',
+            'app.public_access_token' => '',
+        ], function () {
+            DB::transaction(function () {
             $owner = User::query()->updateOrCreate(
                 ['email' => 'tony@madeitcodes.online'],
                 [
@@ -365,6 +372,7 @@ class DemoCompanySeeder extends Seeder
                     ],
                 ]);
             }
+            });
         });
     }
 
