@@ -34,6 +34,45 @@ BuildLedger was created to unify these workflows into a single platform that imp
 - Admin and client dashboards operational
 - CI-style deployment workflow via GitHub + VPS
 
+## 🧠 System Architecture
+
+BuildLedger is designed using a modern decoupled SaaS architecture:
+
+### Frontend Layer
+- Next.js handles all UI rendering
+- Role-based dashboards (Admin, Client, Operations)
+- API-driven state management
+
+### Backend Layer
+- Laravel serves as the core API and business logic engine
+- Handles authentication, authorization, billing, and workflows
+- Implements RESTful API architecture
+
+### Database Layer
+- MySQL used for relational multi-tenant data modeling
+- Strict separation of tenants via scoped queries and IDs
+
+### Infrastructure Layer
+- Docker used for containerized development and deployment
+- Nginx used as reverse proxy and request routing layer
+- Deployed on VPS for production hosting
+
+---
+
+## 🔐 Multi-Tenancy Model
+
+BuildLedger uses a tenant-isolated architecture where:
+
+- Each organization operates in a logically separated workspace
+- Data access is scoped per tenant at the query level
+- Role-based access control ensures secure data boundaries
+
+---
+
+## 🔄 Core Data Flow
+
+Client Request → Next.js Frontend → Laravel API → Business Logic → MySQL → Response → UI Update
+
 ## 🚀 Key Highlights
 
 - Multi-tenant SaaS architecture
