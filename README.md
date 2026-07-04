@@ -121,11 +121,20 @@ BuildLedger follows a complete end-to-end business workflow system:
 
 ## 📸 Product UI Showcase
 
+### Landing Page
+![Landing](assets/images/landing.png)
+
+### Login
+![Login](assets/images/login.png)
+
 ### Dashboard
 ![Dashboard](assets/images/dashboard.png)
 
 ### Clients
 ![Clients](assets/images/clients.png)
+
+### Clients (Detail View)
+![Clients Detail](assets/images/clients2.png)
 
 ### Proposals
 ![Proposals](assets/images/proposals.png)
@@ -136,11 +145,11 @@ BuildLedger follows a complete end-to-end business workflow system:
 ### Invoices
 ![Invoices](assets/images/invoices.png)
 
-### Payments
-![Payments](assets/images/payments.png)
-
 ### Projects
 ![Projects](assets/images/projects.png)
+
+### Payments
+![Payments](assets/images/payments.png)
 
 ### Admin Panel
 ![Admin Panel](assets/images/admin.png)
