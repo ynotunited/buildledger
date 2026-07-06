@@ -154,6 +154,8 @@ BuildLedger follows a complete end-to-end business workflow system:
 ### Admin Panel
 ![Admin Panel](assets/images/admin.png)
 
+All interfaces shown above are part of a live production SaaS system built and deployed independently.
+
 ## 💼 Business Impact
 
 BuildLedger replaces the need for multiple disconnected tools by combining core business operations into a single platform.
